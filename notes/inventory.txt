@@ -1,0 +1,117 @@
+💻 1️⃣ Hardware Assets
+
+These are physical items the company owns, uses internally, or deploys in client projects.
+Examples:
+
+Laptops, desktops, and monitors for employees
+
+Network devices (routers, switches, servers)
+
+Testing or development hardware (IoT boards, Raspberry Pis, sensors, etc.)
+
+Printers, cables, UPS units, and accessories
+
+➡️ In NovaERP terms:
+
+Stored in Inventory table as itemName = "Dell Latitude Laptop" or itemName = "Cisco Router".
+
+quantity tracks how many are available.
+
+Linked to Supplier (e.g., “TechOne Distributors”).
+
+lastUpdatedBy could be the IT admin managing asset records.
+
+🧰 2️⃣ Consumables & Components
+
+These are smaller parts or recurring-use materials often used in technical setups.
+Examples:
+
+Ethernet cables, power adapters, sensors, microcontrollers, external drives
+
+Spare parts for repairs or client deployments
+
+➡️ Used when the company implements or maintains IT infrastructure for clients.
+Projects like “Smart Building Setup” or “IoT Monitoring Deployment” would use these.
+
+💿 3️⃣ Software Licenses and Subscriptions
+
+Although intangible, software licenses can also be tracked as part of the “inventory.”
+Examples:
+
+Microsoft 365 seats
+
+Adobe Creative Cloud licenses
+
+Antivirus subscriptions
+
+SaaS credits or API keys
+
+➡️ Each record can store:
+
+itemName = "MS 365 Business License"
+
+quantity = 20
+
+price = 15 USD/month
+
+supplierName = "Microsoft Partner Tunisia"
+
+🧾 4️⃣ Client Deployments (Inventory linked to Projects)
+
+When your IT company deploys hardware or software to a client as part of a project, that’s when inventory directly links to a project.
+
+➡️ Example:
+
+Project: “ERP Installation for ABC Corp.”
+
+Inventory used:
+
+2 × Dell PowerEdge Servers
+
+10 × Software Licenses
+
+1 × Router
+
+In NovaERP:
+
+The Inventory items are linked to the Project via the Many-to-Many relationship.
+
+Helps calculate total project cost, asset movement, and replenishment needs.
+
+🤝 5️⃣ Supplier Relationship
+
+Even IT companies depend on suppliers for:
+
+Buying hardware (laptops, routers)
+
+Purchasing licenses (through resellers)
+
+Maintenance agreements (for servers or software)
+
+➡️ Supplier examples:
+
+“HP Tunisia” → provides laptops
+
+“Cisco North Africa” → provides network gear
+
+“Microsoft Partner” → provides software licenses
+
+This link helps automate purchase orders, stock updates, and vendor management.
+
+🧭 In Short:
+Purpose	Example	Why It’s in ERP
+IT Equipment	Laptops, monitors, routers	Asset tracking & depreciation
+Consumables	Cables, SSDs, sensors	Internal use or project deployment
+Software Licenses	Office 365, antivirus	Renewal management
+Client Materials	Hardware installed at client site	Project costing
+Supplier Relations	HP, Cisco, Microsoft	Purchase & reordering
+
+So even in a digital services company, the inventory module helps:
+
+Track all company-owned or client-deployed assets
+
+Monitor license renewals or hardware usage
+
+Record supplier information and purchase activity
+
+Maintain internal accountability (“who updated or moved this equipment?”)
