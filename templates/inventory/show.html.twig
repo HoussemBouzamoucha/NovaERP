@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block body %}
+    <h1>Inventory</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ inventory.id }}</td>
+            </tr>
+            <tr>
+                <th>ItemName</th>
+                <td>{{ inventory.itemName }}</td>
+            </tr>
+            <tr>
+                <th>SKU</th>
+                <td>{{ inventory.SKU }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ inventory.quantity }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ inventory.price }}</td>
+            </tr>
+            <tr>
+                <th>SupplierName</th>
+                <td>{{ inventory.SupplierName }}</td>
+            </tr>
+            <tr>
+                <th>LastUpdated_at</th>
+                <td>{{ inventory.lastUpdatedAt ? inventory.lastUpdatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_inventory_index') }}">back to list</a>
+
+    <a href="{{ path('app_inventory_edit', {'id': inventory.id}) }}">edit</a>
+
+    {{ include('inventory/_delete_form.html.twig') }}
+{% endblock %}

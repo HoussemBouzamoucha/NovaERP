@@ -1,0 +1,12 @@
+parameters:
+  app.available_roles:
+    ROLE_SUPER_ADMIN: 'Super Administrator'
+    ROLE_ADMIN: 'Administrator'
+    ROLE_HR_MANAGER: 'HR Manager'
+    ROLE_FINANCE_MANAGER: 'Finance Manager'
+    ROLE_EMPLOYEE: 'Employee'
+    ROLE_INTERN: 'Intern'
+    ROLE_CLIENT: 'Client'
+    ROLE_GUEST: 'Guest'
+  app.default_role: 'ROLE_EMPLOYEE'
+  

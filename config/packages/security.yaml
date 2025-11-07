@@ -1,0 +1,46 @@
+security:
+    password_hashers:
+        App\Entity\Users:
+            algorithm: auto
+
+    providers:
+        users_in_db:
+            entity:
+                class: App\Entity\Users
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            lazy: true
+            provider: users_in_db
+            entry_point: App\Security\AdminAuthenticator
+
+            # Don't use form_login here; the custom authenticator handles it
+            custom_authenticator: App\Security\AdminAuthenticator
+
+            logout:
+                path: logout
+                target: /
+            
+            form_login:
+                login_path: login
+                check_path: login
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+
+           
+
+
+    #access_control:
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+       # - { path: ^/welcome, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+       # - { path: ^/users, roles: ROLE_ADMIN }
+      #  - { path: ^/admin, roles: ROLE_ADMIN }
+     #   - { path: ^/, roles: ROLE_USER }
