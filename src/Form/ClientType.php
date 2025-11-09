@@ -15,7 +15,7 @@ class ClientType extends AbstractType
             ->add('name')
             ->add('email')
             ->add('phoneNumber')
-            ->add('address')
+            ->add('adress')
             ->add('Created_at', null, [
                 'widget' => 'single_text',
             ])

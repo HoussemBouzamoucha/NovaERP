@@ -45,7 +45,8 @@ class CreateAdminUserCommand extends Command
         $admin->setEmail('admin@admin.com'); // email required
         $admin->setFirstName('Admin');
         $admin->setLastName('User');
-        $admin->setDepartment('Administration');
+        $department = $this->em->getRepository(\App\Entity\Department::class)->findOneBy(['name' => 'Administration']) ?? null;
+        $admin->setDepartment($department);
         $admin->setCreatedAt(new \DateTimeImmutable());
 
         // Hash the password

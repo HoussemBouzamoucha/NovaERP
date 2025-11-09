@@ -32,8 +32,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $department = null;
+    #[ORM\ManyToOne(targetEntity: Department::class, inversedBy: 'users')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Department $department = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -62,6 +63,25 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: LeaveRequest::class, mappedBy: 'users')]
     private Collection $LeaveRequest;
 
+    /**
+     * @var Collection<int, Task>
+     */
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'assignedTo')]
+    private Collection $tasks;
+
+    #[ORM\ManyToOne(inversedBy: 'employee')]
+    private ?PayRoll $payRoll = null;
+
+    #[ORM\ManyToOne(inversedBy: 'employee')]
+    private ?Attendance $attendance = null;
+
+    /**
+     * @var Collection<int, Notification>
+     */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'sender')]
+    private Collection $notifications;
+
+    
     public function __construct()
     {
         $this->Project = new ArrayCollection();
@@ -69,6 +89,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->Inventory = new ArrayCollection();
         $this->LeaveRequest = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
+        $this->tasks = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -156,16 +179,16 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getDepartment(): ?string
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
-    public function setDepartment(string $department): static
+    public function setDepartment(?Department $department): static
     {
         $this->department = $department;
         return $this;
-    }
+    }   
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -194,4 +217,90 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function getLeaveRequest(): Collection { return $this->LeaveRequest; }
     public function addLeaveRequest(LeaveRequest $leaveRequest): static { if (!$this->LeaveRequest->contains($leaveRequest)) { $this->LeaveRequest->add($leaveRequest); $leaveRequest->setUsers($this); } return $this; }
     public function removeLeaveRequest(LeaveRequest $leaveRequest): static { if ($this->LeaveRequest->removeElement($leaveRequest)) { if ($leaveRequest->getUsers() === $this) { $leaveRequest->setUsers(null); } } return $this; }
+
+    /**
+     * @return Collection<int, Task>
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): static
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks->add($task);
+            $task->setAssignedTo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): static
+    {
+        if ($this->tasks->removeElement($task)) {
+            // set the owning side to null (unless already changed)
+            if ($task->getAssignedTo() === $this) {
+                $task->setAssignedTo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPayRoll(): ?PayRoll
+    {
+        return $this->payRoll;
+    }
+
+    public function setPayRoll(?PayRoll $payRoll): static
+    {
+        $this->payRoll = $payRoll;
+
+        return $this;
+    }
+
+    public function getAttendance(): ?Attendance
+    {
+        return $this->attendance;
+    }
+
+    public function setAttendance(?Attendance $attendance): static
+    {
+        $this->attendance = $attendance;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getSender() === $this) {
+                $notification->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

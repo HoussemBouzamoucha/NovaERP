@@ -7,6 +7,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use PHPUnit\Framework\TestCase;
+
 
 final class ClientControllerTest extends WebTestCase
 {
@@ -30,7 +32,7 @@ final class ClientControllerTest extends WebTestCase
 
     public function testIndex(): void
     {
-        $this->client->followRedirects();
+        $this->client->followRedirects(true);
         $crawler = $this->client->request('GET', $this->path);
 
         self::assertResponseStatusCodeSame(200);

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New PayRoll{% endblock %}
+
+{% block body %}
+    <h1>Create new PayRoll</h1>
+
+    {{ include('pay_roll/_form.html.twig') }}
+
+    <a href="{{ path('app_pay_roll_index') }}">back to list</a>
+{% endblock %}

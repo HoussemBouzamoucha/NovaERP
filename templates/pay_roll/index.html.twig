@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}PayRoll index{% endblock %}
+
+{% block body %}
+    <h1>PayRoll index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>BaseSalary</th>
+                <th>Bonus</th>
+                <th>Deduction</th>
+                <th>Month</th>
+                <th>PaymentDate_at</th>
+                <th>Status</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pay_roll in pay_rolls %}
+            <tr>
+                <td>{{ pay_roll.id }}</td>
+                <td>{{ pay_roll.baseSalary }}</td>
+                <td>{{ pay_roll.bonus }}</td>
+                <td>{{ pay_roll.deduction }}</td>
+                <td>{{ pay_roll.month ? pay_roll.month|date('Y-m-d') : '' }}</td>
+                <td>{{ pay_roll.paymentDateAt ? pay_roll.paymentDateAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ pay_roll.status }}</td>
+                <td>
+                    <a href="{{ path('app_pay_roll_show', {'id': pay_roll.id}) }}">show</a>
+                    <a href="{{ path('app_pay_roll_edit', {'id': pay_roll.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_pay_roll_new') }}">Create new</a>
+{% endblock %}

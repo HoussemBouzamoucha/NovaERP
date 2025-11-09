@@ -6,10 +6,20 @@ use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Expr\Cast\String_;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {
+
+    public const STATUS_PENDING = 'Pending';
+    public const STATUS_IN_PROGRESS = 'In Progress';
+    public const STATUS_COMPLETED = 'Completed';
+    public const STATUS_PLANNING = 'Planning';
+
+    
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -37,7 +47,7 @@ class Project
      * @var Collection<int, Users>
      */
     #[ORM\ManyToMany(targetEntity: Users::class, mappedBy: 'Project')]
-    private Collection $yes;
+    private Collection $users;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -55,12 +65,21 @@ class Project
     #[ORM\ManyToMany(targetEntity: Inventory::class, mappedBy: 'Project')]
     private Collection $inventories;
 
+    /**
+     * @var Collection<int, Task>
+     */
+    #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'project')]
+    private Collection $tasks;
+
     public function __construct()
     {
-        $this->yes = new ArrayCollection();
+        $this->users = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->inventories = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
+
+    
 
     public function getId(): ?int
     {
@@ -127,44 +146,53 @@ class Project
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
+
+public function getStatus(): ?string
+{
+    return $this->status;
+}
+
+public function setStatus(string $status): static
+{
+    $allowed = [
+        self::STATUS_PENDING,
+        self::STATUS_IN_PROGRESS,
+        self::STATUS_COMPLETED,
+        self::STATUS_PLANNING,
+        
+    ];
+
+    if (!in_array($status, $allowed, true)) {
+        throw new \InvalidArgumentException("Invalid project status: $status");
     }
 
-    public function setStatus(string $status): static
-    {
-        $this->status = $status;
+    $this->status = $status;
+    return $this;
+}
 
-        return $this;
-    }
+
 
     /**
      * @return Collection<int, Users>
      */
-    public function getYes(): Collection
-    {
-        return $this->yes;
+    public function addUser(Users $user): static
+{
+    if (!$this->users->contains($user)) {
+        $this->users->add($user);
+        $user->addProject($this);
     }
 
-    public function addYe(Users $ye): static
-    {
-        if (!$this->yes->contains($ye)) {
-            $this->yes->add($ye);
-            $ye->addProject($this);
-        }
+    return $this;
+}
 
-        return $this;
+public function removeUser(Users $user): static
+{
+    if ($this->users->removeElement($user)) {
+        $user->removeProject($this);
     }
 
-    public function removeYe(Users $ye): static
-    {
-        if ($this->yes->removeElement($ye)) {
-            $ye->removeProject($this);
-        }
-
-        return $this;
-    }
+    return $this;
+}
 
     public function getClient(): ?Client
     {
@@ -234,4 +262,39 @@ class Project
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Task>
+     */
+    public function getTasks(): Collection
+    {
+        return $this->tasks;
+    }
+
+    public function addTask(Task $task): static
+    {
+        if (!$this->tasks->contains($task)) {
+            $this->tasks->add($task);
+            $task->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTask(Task $task): static
+    {
+        if ($this->tasks->removeElement($task)) {
+            // set the owning side to null (unless already changed)
+            if ($task->getProject() === $this) {
+                $task->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+    
+
+  
 }
+
+
