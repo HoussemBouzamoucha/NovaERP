@@ -22,7 +22,7 @@
                 <td>{{ notification.id }}</td>
                 <td>{{ notification.title }}</td>
                 <td>{{ notification.message }}</td>
-                <td>{{ notification.isRead ? 'Yes' : 'No' }}</td>
+                <td>{{ notification.isRead ? 'users' : 'No' }}</td>
                 <td>{{ notification.createdAt ? notification.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_notification_show', {'id': notification.id}) }}">show</a>

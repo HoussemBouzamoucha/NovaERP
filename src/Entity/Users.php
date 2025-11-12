@@ -42,7 +42,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Project>
      */
-    #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'yes')]
+    #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'users')]
     private Collection $Project;
 
     /**
@@ -124,8 +124,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user has at least ROLE_USER
-        $roles[] = 'ROLE_USER';
+        // guarantee every user has at least ROLE_GUEST
+        $roles[] = 'ROLE_GUEST';
         return array_unique($roles);
     }
 

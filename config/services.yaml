@@ -5,14 +5,16 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app.available_roles:
-        - ROLE_SUPER_ADMIN
-        - ROLE_ADMIN
-        - ROLE_USER
-        - ROLE_MANAGER
-        - ROLE_EMPLOYEE
-        - ROLE_HR
-        - ROLE_FINANCE
-        - ROLE_IT_ADMIN
+        - ROLE_SUPER_ADMIN        # Full system access
+        - ROLE_ADMIN              # System configuration, overall management
+        - ROLE_HR                 # Human resources, payroll, recruitment
+        - ROLE_FINANCE            # Accounting, treasury, invoices
+        - ROLE_SALES              # Sales, marketing, customer relations
+        - ROLE_PROCUREMENT        # Procurement, inventory, warehouse
+        - ROLE_PRODUCTION         # Production, quality control, operations
+        - ROLE_PROJECT_MANAGER    # Manages projects and team assignments
+        - ROLE_STAFF              # General employees, contributors, workers
+        - ROLE_GUEST              # Limited / read-only access
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\UserManagement;
+namespace App\Controller\Authentification;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

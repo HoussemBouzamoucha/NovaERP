@@ -23,8 +23,9 @@ security:
             custom_authenticator: App\Security\AdminAuthenticator
 
             logout:
-                path: logout
-                target: /
+                path: app_logout
+                target: app_login
+                invalidate_session: true
             
             form_login:
                 login_path: login
@@ -35,12 +36,24 @@ security:
                 lifetime: 604800
                 path: /
 
-           
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_HR, ROLE_FINANCE, ROLE_SALES, ROLE_PROCUREMENT, ROLE_PRODUCTION, ROLE_PROJECT_MANAGER, ROLE_STAFF, ROLE_GUEST]
+        ROLE_ADMIN: []
+        ROLE_HR: []
+        ROLE_FINANCE: []
+        ROLE_SALES: []
+        ROLE_PROCUREMENT: []
+        ROLE_PRODUCTION: []
+        ROLE_PROJECT_MANAGER: []
+        ROLE_STAFF: []
+        ROLE_GUEST: []
 
 
-    #access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       # - { path: ^/welcome, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       # - { path: ^/users, roles: ROLE_ADMIN }
-      #  - { path: ^/admin, roles: ROLE_ADMIN }
-     #   - { path: ^/, roles: ROLE_USER }
+    access_control:
+        - { path: ^/admin/hr, roles: ROLE_HR }
+        - { path: ^/admin/finance, roles: ROLE_FINANCE }
+        - { path: ^/admin/sales, roles: ROLE_SALES }
+        - { path: ^/admin/procurement, roles: ROLE_PROCUREMENT }
+        - { path: ^/admin/production, roles: ROLE_PRODUCTION }
+        - { path: ^/admin/projects, roles: ROLE_PROJECT_MANAGER }
+        - { path: ^/admin/staff, roles: ROLE_STAFF }

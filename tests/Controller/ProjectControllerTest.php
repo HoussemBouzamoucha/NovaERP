@@ -54,7 +54,7 @@ final class ProjectControllerTest extends WebTestCase
             'project[endDate_at]' => 'Testing',
             'project[budget]' => 'Testing',
             'project[status]' => 'Testing',
-            'project[yes]' => 'Testing',
+            'project[users]' => 'Testing',
             'project[Client]' => 'Testing',
             'project[inventories]' => 'Testing',
         ]);
@@ -74,7 +74,7 @@ final class ProjectControllerTest extends WebTestCase
         $fixture->setEndDate_at('My Title');
         $fixture->setBudget('My Title');
         $fixture->setStatus('My Title');
-        $fixture->setYes('My Title');
+        $fixture->setusers('My Title');
         $fixture->setClient('My Title');
         $fixture->setInventories('My Title');
 
@@ -99,7 +99,7 @@ final class ProjectControllerTest extends WebTestCase
         $fixture->setEndDate_at('Value');
         $fixture->setBudget('Value');
         $fixture->setStatus('Value');
-        $fixture->setYes('Value');
+        $fixture->setusers('Value');
         $fixture->setClient('Value');
         $fixture->setInventories('Value');
 
@@ -115,7 +115,7 @@ final class ProjectControllerTest extends WebTestCase
             'project[endDate_at]' => 'Something New',
             'project[budget]' => 'Something New',
             'project[status]' => 'Something New',
-            'project[yes]' => 'Something New',
+            'project[users]' => 'Something New',
             'project[Client]' => 'Something New',
             'project[inventories]' => 'Something New',
         ]);
@@ -130,7 +130,7 @@ final class ProjectControllerTest extends WebTestCase
         self::assertSame('Something New', $fixture[0]->getEndDate_at());
         self::assertSame('Something New', $fixture[0]->getBudget());
         self::assertSame('Something New', $fixture[0]->getStatus());
-        self::assertSame('Something New', $fixture[0]->getYes());
+        self::assertSame('Something New', $fixture[0]->getusers());
         self::assertSame('Something New', $fixture[0]->getClient());
         self::assertSame('Something New', $fixture[0]->getInventories());
     }
@@ -145,7 +145,7 @@ final class ProjectControllerTest extends WebTestCase
         $fixture->setEndDate_at('Value');
         $fixture->setBudget('Value');
         $fixture->setStatus('Value');
-        $fixture->setYes('Value');
+        $fixture->setusers('Value');
         $fixture->setClient('Value');
         $fixture->setInventories('Value');
 

@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InventoryType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('itemName')
@@ -26,16 +26,19 @@ class InventoryType extends AbstractType
             ])
             ->add('users', EntityType::class, [
                 'class' => Users::class,
-                'choice_label' => 'id',
+                'choice_label' => fn(Users $user) => $user->getFirstName() . ' ' . $user->getLastName() . ' (' . $user->getEmail() . ')',
+                'placeholder' => 'Select a user',
             ])
             ->add('Supplier', EntityType::class, [
                 'class' => Supplier::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
+                'placeholder' => 'Select a supplier',
             ])
             ->add('Project', EntityType::class, [
                 'class' => Project::class,
-                'choice_label' => 'id',
+                'choice_label' => 'title',
                 'multiple' => true,
+                'required' => false,
             ])
         ;
     }
@@ -47,3 +50,4 @@ class InventoryType extends AbstractType
         ]);
     }
 }
+

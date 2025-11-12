@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Clients;
+namespace App\Controller\Sales;
 
 use App\Entity\Client;
 use App\Form\ClientType;

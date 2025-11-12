@@ -293,6 +293,10 @@ public function removeUser(Users $user): static
         return $this;
     }
     
+    public function getUsers(): Collection
+{
+    return $this->users;
+}
 
   
 }
