@@ -30,7 +30,7 @@
 				font-size: 1.8rem;
 				color: #fff;
 			}
-			input[type="email"],
+			input[type="text"],
 			input[type="password"] {
 				width: 100%;
 				padding: 0.8rem;
@@ -41,8 +41,7 @@
 				color: #fff;
 				font-size: 1rem;
 			}
-			input[type="email"]::placeholder,
-			input[type="password"]::placeholder {
+			input::placeholder {
 				color: #ddd;
 			}
 			button {
@@ -79,14 +78,13 @@
 
 			{# Display login errors #}
 			{% if error %}
-				<div class="error">
-					{{ error.messageKey|trans(error.messageData, 'security') }}
-				</div>
+				<div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 			{% endif %}
 
+
 			<form method="post">
-				<input type="email" name="email" value="{{ last_username }}" placeholder="Email" required>
-				<input type="password" name="password" placeholder="Password" required>
+				<input type="text" name="_username" value="{{ last_username }}" placeholder="Email" required autofocus>
+				<input type="password" name="_password" placeholder="Password" required>
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 				<button type="submit">Login</button>

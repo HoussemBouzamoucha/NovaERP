@@ -16,6 +16,16 @@ class InventoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Inventory::class);
     }
 
+
+public function getInventoryGroupedByCategory(): array
+{
+    return $this->createQueryBuilder('i')
+        ->select('i.category, COUNT(i.id) as total')
+        ->groupBy('i.category')
+        ->getQuery()
+        ->getResult();
+}
+
     //    /**
     //     * @return Inventory[] Returns an array of Inventory objects
     //     */

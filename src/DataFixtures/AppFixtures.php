@@ -235,37 +235,74 @@ class AppFixtures extends Fixture
 
         // Create Inventory
         $inventories = [];
-        $inventoryData = [
-            ['item_name' => 'Laptop Dell XPS 15', 'sku' => 'LAP-DELL-001', 'quantity' => 25, 'price' => 1299.99],
-            ['item_name' => 'Monitor Samsung 27"', 'sku' => 'MON-SAM-002', 'quantity' => 40, 'price' => 349.99],
-            ['item_name' => 'Keyboard Mechanical', 'sku' => 'KEY-MECH-003', 'quantity' => 60, 'price' => 89.99],
-            ['item_name' => 'Mouse Wireless', 'sku' => 'MOU-WIRE-004', 'quantity' => 80, 'price' => 29.99],
-            ['item_name' => 'Webcam HD', 'sku' => 'WEB-HD-005', 'quantity' => 35, 'price' => 79.99],
-            ['item_name' => 'Headset Professional', 'sku' => 'HEAD-PRO-006', 'quantity' => 50, 'price' => 149.99],
-            ['item_name' => 'Printer Laser Color', 'sku' => 'PRI-LAS-007', 'quantity' => 15, 'price' => 599.99],
-            ['item_name' => 'Scanner Document', 'sku' => 'SCA-DOC-008', 'quantity' => 20, 'price' => 299.99],
-            ['item_name' => 'Desk Ergonomic', 'sku' => 'DSK-ERG-009', 'quantity' => 30, 'price' => 499.99],
-            ['item_name' => 'Chair Office Executive', 'sku' => 'CHR-OFF-010', 'quantity' => 45, 'price' => 349.99],
-            ['item_name' => 'Router Network Pro', 'sku' => 'NET-ROU-011', 'quantity' => 28, 'price' => 199.99],
-            ['item_name' => 'UPS Battery Backup', 'sku' => 'UPS-BAK-012', 'quantity' => 32, 'price' => 249.99],
-        ];
+$inventoryData = [
+    // --- Electronics ---
+    ['item_name' => 'Laptop Dell XPS 15', 'sku' => 'LAP-DELL-001', 'quantity' => 25, 'price' => 1299.99, 'category' => 'Electronics'],
+    ['item_name' => 'Monitor Samsung 27"', 'sku' => 'MON-SAM-002', 'quantity' => 40, 'price' => 349.99, 'category' => 'Electronics'],
+    ['item_name' => 'Keyboard Mechanical', 'sku' => 'KEY-MECH-003', 'quantity' => 60, 'price' => 89.99, 'category' => 'Electronics'],
+    ['item_name' => 'Mouse Wireless', 'sku' => 'MOU-WIRE-004', 'quantity' => 80, 'price' => 29.99, 'category' => 'Electronics'],
+    ['item_name' => 'Webcam HD', 'sku' => 'WEB-HD-005', 'quantity' => 35, 'price' => 79.99, 'category' => 'Electronics'],
+    ['item_name' => 'Headset Professional', 'sku' => 'HEAD-PRO-006', 'quantity' => 50, 'price' => 149.99, 'category' => 'Electronics'],
+    ['item_name' => 'Printer Laser Color', 'sku' => 'PRI-LAS-007', 'quantity' => 15, 'price' => 599.99, 'category' => 'Electronics'],
+    ['item_name' => 'Scanner Document', 'sku' => 'SCA-DOC-008', 'quantity' => 20, 'price' => 299.99, 'category' => 'Electronics'],
 
-        // Get procurement users for inventory
-        $procurementUsers = array_filter($users, fn($u) => in_array('ROLE_PROCUREMENT', $u->getRoles()));
+    // --- Furniture ---
+    ['item_name' => 'Desk Ergonomic', 'sku' => 'DSK-ERG-009', 'quantity' => 30, 'price' => 499.99, 'category' => 'Furniture'],
+    ['item_name' => 'Chair Office Executive', 'sku' => 'CHR-OFF-010', 'quantity' => 45, 'price' => 349.99, 'category' => 'Furniture'],
 
-        foreach ($inventoryData as $data) {
-            $inventory = new Inventory();
-            $inventory->setItemName($data['item_name']);
-            $inventory->setSku($data['sku']);
-            $inventory->setQuantity($data['quantity']);
-            $inventory->setPrice($data['price']);
-            $inventory->setSupplierName($suppliers[array_rand($suppliers)]->getName());
-            $inventory->setLastUpdatedAt(new \DateTimeImmutable());
-            $inventory->setSupplier($suppliers[array_rand($suppliers)]);
-            $inventory->setUsers($procurementUsers[array_rand($procurementUsers)]);
-            $manager->persist($inventory);
-            $inventories[] = $inventory;
-        }
+    // --- Networking ---
+    ['item_name' => 'Router Network Pro', 'sku' => 'NET-ROU-011', 'quantity' => 28, 'price' => 199.99, 'category' => 'Networking'],
+    ['item_name' => 'UPS Battery Backup', 'sku' => 'UPS-BAK-012', 'quantity' => 32, 'price' => 249.99, 'category' => 'Networking'],
+    ['item_name' => 'Ethernet Switch 24-Port Gigabit', 'sku' => 'NET-SWI-013', 'quantity' => 22, 'price' => 179.99, 'category' => 'Networking'],
+    ['item_name' => 'Wi-Fi Access Point Ubiquiti UniFi 6', 'sku' => 'NET-UBI-014', 'quantity' => 35, 'price' => 139.99, 'category' => 'Networking'],
+
+    // --- Embedded Systems ---
+    ['item_name' => 'Raspberry Pi 5 Model B 8GB', 'sku' => 'EMB-RPI-015', 'quantity' => 50, 'price' => 89.99, 'category' => 'Embedded Systems'],
+    ['item_name' => 'Arduino Mega 2560', 'sku' => 'EMB-ARD-016', 'quantity' => 75, 'price' => 45.50, 'category' => 'Embedded Systems'],
+    ['item_name' => 'ESP32 Dev Board WiFi + Bluetooth', 'sku' => 'EMB-ESP-017', 'quantity' => 120, 'price' => 18.99, 'category' => 'Embedded Systems'],
+    ['item_name' => 'STM32 Nucleo-F446RE Board', 'sku' => 'EMB-STM-018', 'quantity' => 60, 'price' => 39.99, 'category' => 'Embedded Systems'],
+    ['item_name' => 'BeagleBone Black Rev C', 'sku' => 'EMB-BBB-019', 'quantity' => 25, 'price' => 79.99, 'category' => 'Embedded Systems'],
+
+    // --- IoT Devices ---
+    ['item_name' => 'Smart Temperature Sensor IoT', 'sku' => 'IOT-TEMP-020', 'quantity' => 100, 'price' => 24.99, 'category' => 'IoT Devices'],
+    ['item_name' => 'Smart Water Flow Sensor', 'sku' => 'IOT-WATER-021', 'quantity' => 90, 'price' => 34.99, 'category' => 'IoT Devices'],
+    ['item_name' => 'IoT Ultrasonic Distance Sensor', 'sku' => 'IOT-ULTRA-022', 'quantity' => 110, 'price' => 19.99, 'category' => 'IoT Devices'],
+    ['item_name' => 'IoT Gateway Industrial', 'sku' => 'IOT-GATE-023', 'quantity' => 15, 'price' => 499.99, 'category' => 'IoT Devices'],
+    ['item_name' => 'Smart Light Controller', 'sku' => 'IOT-LIGHT-024', 'quantity' => 85, 'price' => 29.99, 'category' => 'IoT Devices'],
+    ['item_name' => 'IoT Air Quality Sensor Kit', 'sku' => 'IOT-AIR-025', 'quantity' => 70, 'price' => 59.99, 'category' => 'IoT Devices'],
+
+    // --- Office Supplies ---
+    ['item_name' => 'Paper A4 80gsm Pack of 500', 'sku' => 'OFF-PAPR-026', 'quantity' => 200, 'price' => 7.99, 'category' => 'Office Supplies'],
+    ['item_name' => 'Pen Blue Ballpoint Pack of 10', 'sku' => 'OFF-PEN-027', 'quantity' => 150, 'price' => 4.99, 'category' => 'Office Supplies'],
+    ['item_name' => 'Notebook Spiral 100 Pages', 'sku' => 'OFF-NOTE-028', 'quantity' => 130, 'price' => 3.49, 'category' => 'Office Supplies'],
+    ['item_name' => 'Stapler Heavy Duty', 'sku' => 'OFF-STAP-029', 'quantity' => 40, 'price' => 12.99, 'category' => 'Office Supplies'],
+    ['item_name' => 'Desk Organizer Set', 'sku' => 'OFF-ORG-030', 'quantity' => 25, 'price' => 24.99, 'category' => 'Office Supplies'],
+
+    // --- Sensors / Modules ---
+    ['item_name' => 'DHT22 Temperature & Humidity Sensor', 'sku' => 'SEN-DHT-031', 'quantity' => 100, 'price' => 9.99, 'category' => 'Sensors'],
+    ['item_name' => 'HC-SR04 Ultrasonic Sensor', 'sku' => 'SEN-HC-032', 'quantity' => 150, 'price' => 4.99, 'category' => 'Sensors'],
+    ['item_name' => 'BMP280 Pressure Sensor Module', 'sku' => 'SEN-BMP-033', 'quantity' => 90, 'price' => 6.99, 'category' => 'Sensors'],
+    ['item_name' => 'PIR Motion Sensor Module', 'sku' => 'SEN-PIR-034', 'quantity' => 110, 'price' => 5.99, 'category' => 'Sensors'],
+    ['item_name' => 'MQ-2 Gas Sensor', 'sku' => 'SEN-MQ2-035', 'quantity' => 85, 'price' => 8.99, 'category' => 'Sensors'],
+];
+
+$procurementUsers = array_filter($users, fn($u) => in_array('ROLE_PROCUREMENT', $u->getRoles()));
+
+foreach ($inventoryData as $data) {
+    $inventory = new Inventory();
+    $inventory->setItemName($data['item_name']);
+    $inventory->setSku($data['sku']);
+    $inventory->setQuantity($data['quantity']);
+    $inventory->setPrice($data['price']);
+    $inventory->setSupplierName($suppliers[array_rand($suppliers)]->getName());
+    $inventory->setLastUpdatedAt(new \DateTimeImmutable());
+    $inventory->setSupplier($suppliers[array_rand($suppliers)]);
+    $inventory->setUsers($procurementUsers[array_rand($procurementUsers)]);
+    $inventory->setCategory($data['category']);
+    $manager->persist($inventory);
+    $inventories[] = $inventory;
+}
+
 
         // Create Projects
         $projects = [];

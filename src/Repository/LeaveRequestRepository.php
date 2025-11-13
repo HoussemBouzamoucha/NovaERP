@@ -16,6 +16,18 @@ class LeaveRequestRepository extends ServiceEntityRepository
         parent::__construct($registry, LeaveRequest::class);
     }
 
+
+    public function countPendingRequests(): int
+    {
+        return $this->createQueryBuilder('lr')
+            ->select('COUNT(lr.id)')
+            ->andWhere('lr.status = :status')
+            ->setParameter('status', 'pending')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
     //    /**
     //     * @return LeaveRequest[] Returns an array of LeaveRequest objects
     //     */

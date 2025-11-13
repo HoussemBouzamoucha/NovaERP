@@ -9,17 +9,18 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-   #[Route(path: '/login', name: 'app_login')]
+   #[Route(path: 'home/page/access_erp', name: 'access_erp')]
 public function login(AuthenticationUtils $authenticationUtils): Response
 {
     if ($this->getUser()) {
-        return $this->redirectToRoute('app_welcome');
+        return $this->redirectToRoute('app_home_page');
     }
 
     $error = $authenticationUtils->getLastAuthenticationError();
     $lastUsername = $authenticationUtils->getLastUsername();
 
     return $this->render('security/login.html.twig', [
+        
         'last_username' => $lastUsername,
         'error' => $error,
     ]);

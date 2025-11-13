@@ -1,20 +1,342 @@
-{% extends 'base.html.twig' %}
+{# templates/dashboard/index.html.twig #}
 
-{% block title %}Hello DashboardController!{% endblock %}
+<h2 style="margin-left: 220px;">Dashboard</h2>
+<h3>
+	Welcome back,{{ app.user.firstName ?? 'User' }}!
+</h3>
 
-{% block body %}
+<h4>Here's what's happening with your business today.</h4>
+
+
+<div class="side-bar">
+	<ul class="sidebar-menu">
+		<li class="menu-item">
+			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 6h6m0 0v6H5v-6h6v-6H5v6h6v6"/>
+			</svg>
+			Dashboard
+		</li>
+		<li class="menu-item">
+			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4 4 0 0112 14a4 4 0 016.879 3.804M12 14a4 4 0 100-8 4 4 0 000 8z"/>
+			</svg>
+			Users
+		</li>
+		<li class="menu-item">
+			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7H3z"/>
+			</svg>
+			Clients
+		</li>
+		<li class="menu-item">
+			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m2 0a2 2 0 012 2v6H5v-6a2 2 0 012-2h6"/>
+			</svg>
+			Projects
+		</li>
+		<li class="menu-item">
+			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6M12 7v0m0 0a9 9 0 100 18 9 9 0 000-18z"/>
+			</svg>
+			Invoices
+		</li>
+		<li class="menu-item">
+			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/>
+			</svg>
+			Inventory
+		</li>
+		<li class="menu-item">
+			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h4l3 9 4-18 3 9h4"/>
+			</svg>
+			Suppliers
+		</li>
+		<li class="menu-item">
+			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m2 0a2 2 0 012 2v6H5v-6a2 2 0 012-2h6"/>
+			</svg>
+			Leave Requests
+		</li>
+		<li class="menu-item">
+			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+			</svg>
+			Settings
+		</li>
+	</ul>
+</div>
+
+
+<div class="dashboard-cards">
+	<div class="card">
+		<div class="card-content">
+			<div
+				class="icon">
+				<!-- SVG: Projects -->
+				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#3498db" viewbox="0 0 24 24"><path d="M3 4a1 1 0 0 1 1-1h6l2 2h9a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z"/></svg>
+			</div>
+			<div class="card-text">
+				<h3>Total Projects</h3>
+				<p>{{ totalProjects }}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-content">
+			<div
+				class="icon">
+				<!-- SVG: Clients -->
+				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#2ecc71" viewbox="0 0 24 24"><path d="M16 14c2.667 0 8 1.333 8 4v2H0v-2c0-2.667 5.333-4 8-4s8-1.333 8-4c0 2.667-5.333 4-8 4s-8-1.333-8-4c0 2.667 5.333 4 8 4zM12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5z"/></svg>
+			</div>
+			<div class="card-text">
+				<h3>Active Clients</h3>
+				<p>{{ activeClients }}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-content">
+			<div
+				class="icon">
+				<!-- SVG: Pending Invoices -->
+				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#e74c3c" viewbox="0 0 24 24"><path d="M19 2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-1 16H6v-2h12zm0-4H6v-2h12zm0-4H6V8h12z"/></svg>
+			</div>
+			<div class="card-text">
+				<h3>Pending Invoices</h3>
+				<p>{{ pendingInvoices }}</p>
+			</div>
+		</div>
+	</div>
+	<div class="card">
+		<div class="card-content">
+			<div
+				class="icon">
+				<!-- SVG: Pending Leave -->
+				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#f39c12" viewbox="0 0 24 24"><path d="M12 1a11 11 0 1 0 11 11A11.012 11.012 0 0 0 12 1zm1 12h-5V11h4V6h2z"/></svg>
+			</div>
+			<div class="card-text">
+				<h3>Pending Leave Requests</h3>
+				<p>{{ pendingLeaves }}</p>
+			</div>
+		</div>
+	</div>
+</div>
+
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+	body {
+		background-color: #f0f2f5;
+		margin-left: 220px; /* leave space for menu */
+		font-family: Arial, sans-serif;
+	}
+
+	.dashboard-cards {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+		gap: 16px;
+		margin-top: 20px;
+	}
+
+	.card {
+		background-color: white;
+		border: 1px solid #ddd;
+		border-radius: 8px;
+		padding: 16px;
+		flex: 1 1 200px;
+		max-width: 250px;
+		display: flex;
+		align-items: center;
+		transition: all 0.3s ease; /* smooth hover effect */
+		cursor: pointer;
+	}
+
+	.card:hover {
+		transform: translateY(-5px) scale(1.03); /* lift and scale */
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+		border-color: #ccc;
+	}
+
+	.card-content {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.icon {
+		flex-shrink: 0;
+	}
+
+	.card-text h3 {
+		margin: 0 0 8px;
+		font-size: 1rem;
+	}
+
+	.card-text p {
+		margin: 0;
+		font-size: 1.2rem;
+		font-weight: bold;
+	}
+
+
+	.side-bar {
+		width: 220px;
+		background-color: #2c3e50;
+		color: white;
+		position: fixed; /* fixed on left side */
+		top: 0;
+		left: 0;
+		bottom: 0;
+		padding-top: 20px;
+		padding-left: 20px;
+		box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+		font-family: Arial, sans-serif;
+	}
+
+	.sidebar-menu {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.menu-item {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 5px;
+		cursor: pointer;
+		transition: background 0.2s;
+	}
+
+	.menu-item:hover {
+		background-color: #34495e;
+		padding-left: 25px; /* subtle slide effect */
+	}
+	.icon {
+		flex-shrink: 0;
+	}
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Houssem/Documents/NovaERP/src/Controller/DashboardController.php</code></li>
-        <li>Your template at <code>C:/Users/Houssem/Documents/NovaERP/templates/dashboard/index.html.twig</code></li>
-    </ul>
-</div>
+{% block body %}
+	<h2 class="mb-4">Quick Actions</h2>
+
+	<div
+		class="quick-actions-row">
+		<!-- Create Invoice -->
+		<div class="card text-center quick-action-card">
+			<div class="card-body">
+				<i class="bi bi-file-earmark-plus-fill fs-1 mb-2"></i>
+				<h5 class="card-title">Create Invoice</h5>
+				<p class="card-text">Generate a new invoice for a client quickly.</p>
+				<a href="{{ path('app_invoice_new') }}" class="btn btn-primary">Go</a>
+			</div>
+		</div>
+
+		<!-- Add Client -->
+		<div class="card text-center quick-action-card">
+			<div class="card-body">
+				<i class="bi bi-people-fill fs-1 mb-2"></i>
+				<h5 class="card-title">Add Client</h5>
+				<p class="card-text">Register a new client in the system.</p>
+				<a href="{{ path('app_client_new') }}" class="btn btn-success">Go</a>
+			</div>
+		</div>
+
+		<!-- Request Leave -->
+		<div class="card text-center quick-action-card">
+			<div class="card-body">
+				<i class="bi bi-calendar-plus-fill fs-1 mb-2"></i>
+				<h5 class="card-title">Request Leave</h5>
+				<p class="card-text">Submit a leave request easily.</p>
+				<a href="{{ path('app_leave_request_new') }}" class="btn btn-warning">Go</a>
+			</div>
+		</div>
+	</div>
+	<style>
+		.quick-action-card {
+			transition: transform 0.2s, box-shadow 0.2s;
+		}
+		.quick-action-card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+		}
+	</style>
+
+	<h2>Inventory by Category</h2>
+	<div id="columnchart_material" class="my-chart" style="width: 500px; height: 400px;"></div>
+
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		// Load Google Charts
+google.charts.load('current', {'packages': ['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() { // Prepare data array for Google Charts
+var data = google.visualization.arrayToDataTable([
+[
+'Category', 'Total Items'
+], // header row
+{% for inv in inventoryPerCategory %}
+[
+'{{ inv.category }}', {{ inv.total }}
+],{% endfor %}
+]);
+
+var options = {
+title: 'Inventory by Category',
+chartArea: {
+width: '60%'
+},
+hAxis: {
+title: '',
+textPosition: 'none'
+},
+vAxis: {
+title: ''
+}
+};
+
+var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
+chart.draw(data, options);
+}
+	</script>
 {% endblock %}
+<style>
+	.my-chart {
+		margin: 50px 50px 30px 30px; /* centers horizontally with top/bottom spacing */
+		max-width: 50%; /* responsive width */
+		background-color: #f9f9f9; /* optional background */
+		border: 1px solid #ccc; /* optional border */
+		padding: 20px; /* optional padding */
+	}
+
+	.quick-actions-row {
+		display: flex;
+		justify-content: center; /* center horizontally */
+		flex-wrap: wrap; /* wrap on smaller screens */
+		gap: 30px; /* spacing between cards */
+		margin-bottom: 40px;
+	}
+
+	.quick-action-card {
+		flex: 1 1 250px; /* responsive width, min 250px */
+		max-width: 300px;
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+	.quick-action-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+	}
+
+	.quick-action-card i {
+		color: #0d6efd; /* optional: primary color for icons */
+	}
+
+	.quick-action-card .btn {
+		margin-top: 10px;
+	}
+</style>

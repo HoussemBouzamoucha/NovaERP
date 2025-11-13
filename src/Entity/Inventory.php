@@ -47,6 +47,9 @@ class Inventory
     #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'inventories')]
     private Collection $Project;
 
+    #[ORM\Column(length: 255)]
+    private ?string $category = null;
+
     public function __construct()
     {
         $this->Project = new ArrayCollection();
@@ -173,6 +176,18 @@ class Inventory
     public function removeProject(Project $project): static
     {
         $this->Project->removeElement($project);
+
+        return $this;
+    }
+
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

@@ -20,6 +20,7 @@ class InventoryType extends AbstractType
             ->add('SKU')
             ->add('quantity')
             ->add('price')
+            ->add('category')
             ->add('SupplierName')
             ->add('lastUpdated_at', null, [
                 'widget' => 'single_text',

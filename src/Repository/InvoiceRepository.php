@@ -16,6 +16,15 @@ class InvoiceRepository extends ServiceEntityRepository
         parent::__construct($registry, Invoice::class);
     }
 
+    public function pendingInvoices():int{
+        return $this-> createQueryBuilder('i')
+            ->select('COUNT(i.id)')
+            ->andWhere('i.status = :status')
+            ->setParameter('status', 'pending')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return Invoice[] Returns an array of Invoice objects
     //     */

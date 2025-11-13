@@ -1,20 +1,56 @@
+{# templates/home_page/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomePageController!{% endblock %}
+{% block title %}Home Page
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<!-- Hero / Top Section -->
+	<section id="home" class="py-5 text-center bg-primary text-white">
+		<div class="container">
+			<h1>Welcome to NovaERP</h1>
+			<p>Your all-in-one ERP solution</p>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+		</div>
+	</section>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Houssem/Documents/NovaERP/src/Controller/HomePageController.php</code></li>
-        <li>Your template at <code>C:/Users/Houssem/Documents/NovaERP/templates/home_page/index.html.twig</code></li>
-    </ul>
-</div>
+	<!-- About Section -->
+	<section id="about" class="py-5 bg-light">
+		<div class="container">
+			<h2>About Us</h2>
+			<p>Here is some info about the company...</p>
+		</div>
+	</section>
+
+	<!-- Project Section -->
+	<section id="projects" class="py-5">
+		<div class="container">
+			<h2>Our Projects</h2>
+			<p>Details about our projects...</p>
+		</div>
+	</section>
+
+	<!-- Testimonials Section -->
+	<section id="testimonials" class="py-5 bg-light">
+		<div class="container">
+			<h2>Testimonials</h2>
+			<p>What our clients say...</p>
+		</div>
+	</section>
+
+	<!-- Internships Section -->
+	<section id="internships" class="py-5">
+		<div class="container">
+			<h2>Internships</h2>
+			<p>Join our team as an intern...</p>
+		</div>
+	</section>
+
+	<!-- Contact Section -->
+	<section id="contact" class="py-5 bg-light">
+		<div class="container">
+			<h2>Contact Us</h2>
+			<p>Contact form or info goes here...</p>
+		</div>
+	</section>
 {% endblock %}
