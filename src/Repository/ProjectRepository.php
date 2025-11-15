@@ -23,7 +23,31 @@ class ProjectRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
         }
-        
+ public function getMonthlyCompletedProjects(int $year): array
+{
+    $monthlyCounts = array_fill(1, 12, 0); // Initialize 12 months with 0
+
+    $projects = $this->createQueryBuilder('p')
+        ->select('p')
+        ->where('p.status = :status')
+        ->andWhere('p.endDate_at BETWEEN :start AND :end')
+        ->setParameter('status', Project::STATUS_COMPLETED)
+        ->setParameter('start', new \DateTimeImmutable("$year-01-01 00:00:00"))
+        ->setParameter('end', new \DateTimeImmutable("$year-12-31 23:59:59"))
+        ->getQuery()
+        ->getResult();
+
+    foreach ($projects as $project) {
+        $month = (int)$project->getEndDateAt()->format('n'); // Month 1–12
+        $monthlyCounts[$month]++;
+    }
+
+    // Ensure keys are 0–11 if your chart library expects it
+    return array_values($monthlyCounts);
+}
+
+
+
 
     //    /**
     //     * @return Project[] Returns an array of Project objects

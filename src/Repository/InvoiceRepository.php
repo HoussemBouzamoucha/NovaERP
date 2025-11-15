@@ -24,7 +24,17 @@ class InvoiceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    public function paidInvoices(): int
+{
+    $sum = $this->createQueryBuilder('p')
+        ->select('SUM(p.totalAmount)')
+        ->andWhere('p.status = :status')
+        ->setParameter('status', 'paid')
+        ->getQuery()
+        ->getSingleScalarResult();
 
+    return (int) $sum; // cast null to 0 if needed
+}
     //    /**
     //     * @return Invoice[] Returns an array of Invoice objects
     //     */
