@@ -2,6 +2,7 @@
 
 namespace App\Controller\Home;
 
+use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,4 +16,6 @@ final class HomePageController extends AbstractController
             'controller_name' => 'HomePageController',
         ]);
     }
+
 }
+

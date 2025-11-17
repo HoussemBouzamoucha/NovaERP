@@ -13,10 +13,14 @@ use App\Repository\ProjectRepository;
 use App\Repository\ClientRepository;
 use App\Repository\InventoryRepository;
 use App\Repository\InvoiceRepository;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+
+
+#[IsGranted('ROLE_ADMIN')]
 final class DashboardController extends AbstractController
 {
-    #[Route('/dashboard', name: 'app_dashboard')]
+#[Route('/admin/dashboard', name: 'app_dashboard')]
     public function index(
         Request $request, // <--- Add this
         LeaveRequestRepository $leaveRequestRepository,
@@ -39,7 +43,7 @@ final class DashboardController extends AbstractController
 
 
         
-        return $this->render('dashboard/index.html.twig', [
+        return $this->render('dashboard/admin/index.html.twig', [
             'pendingLeaves' => $pendingLeaves,
             'totalProjects' => $totalProjects,
             'activeClients' => $activeClients,

@@ -14,30 +14,20 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        # API firewall for JWT
-        api:
-            pattern: ^/api
-            stateless: true
-            provider: users_in_db
-            jwt: ~
-
-
         main:
             lazy: true
             provider: users_in_db
             entry_point: App\Security\AdminAuthenticator
-
-            # Don't use form_login here; the custom authenticator handles it
             custom_authenticator: App\Security\AdminAuthenticator
+
+            form_login:
+                login_path: access_erp
+                check_path: access_erp
 
             logout:
                 path: app_logout
-                target: app_login
+                target: access_erp
                 invalidate_session: true
-            
-            form_login:
-                login_path: login
-                check_path: login
 
             remember_me:
                 secret: '%kernel.secret%'
@@ -56,7 +46,6 @@ security:
         ROLE_STAFF: []
         ROLE_GUEST: []
 
-
     access_control:
         - { path: ^/admin/hr, roles: ROLE_HR }
         - { path: ^/admin/finance, roles: ROLE_FINANCE }
@@ -65,9 +54,3 @@ security:
         - { path: ^/admin/production, roles: ROLE_PRODUCTION }
         - { path: ^/admin/projects, roles: ROLE_PROJECT_MANAGER }
         - { path: ^/admin/staff, roles: ROLE_STAFF }
-
-
-
-    # API access
-        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

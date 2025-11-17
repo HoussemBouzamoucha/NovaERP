@@ -85,7 +85,7 @@ class AppFixtures extends Fixture
             // Staff (6)
             75000, 72000, 70000, 68000, 65000, 62000,
             // Guests (3)
-            50000, 48000, 45000,
+            0, 0, 0,
         ];
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October'];
 
@@ -205,7 +205,7 @@ class AppFixtures extends Fixture
             $client->setName($data['name']);
             $client->setEmail($data['email']);
             $client->setPhoneNumber($data['phone']);
-            $client->setAdress($data['address']);
+            $client->setAddress($data['address']);
             $client->setCreatedAt(new \DateTimeImmutable('-' . rand(60, 365) . ' days'));
             $manager->persist($client);
             $clients[] = $client;

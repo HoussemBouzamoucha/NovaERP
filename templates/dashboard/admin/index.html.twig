@@ -448,14 +448,12 @@ window.addEventListener('resize', drawChart);
 google.charts.setOnLoadCallback(drawProjectsChart);
 
 function drawProjectsChart() { // Prepare data from backend
-const monthlyProjects = [{% set started = false %}
-{% for value in monthlyProjects %}
+const monthlyProjects = [{% set started = false %}{% for value in monthlyProjects %}
 {% if value > 0 %}
 {% set started = true %}
 {% endif %}
 {{ started ? value : 'null' }}
-{% if not loop.last %},{% endif %}
-{% endfor %}];
+{% if not loop.last %},{% endif %}{% endfor %}];
 
 const dataArray = [
 [

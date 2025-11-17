@@ -30,7 +30,7 @@
 				font-size: 1.8rem;
 				color: #fff;
 			}
-			input[type="text"],
+			input[type="email"],
 			input[type="password"] {
 				width: 100%;
 				padding: 0.8rem;
@@ -83,8 +83,10 @@
 
 
 			<form method="post">
-				<input type="text" name="_username" value="{{ last_username }}" placeholder="Email" required autofocus>
-				<input type="password" name="_password" placeholder="Password" required>
+				<input type="email" name="email" value="{{ last_username }}" placeholder="Email" required autofocus>
+				<input type="password" name="password" placeholder="Password" required>
+
+
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 				<button type="submit">Login</button>
