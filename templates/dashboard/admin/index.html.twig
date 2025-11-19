@@ -15,17 +15,14 @@
 			<img src="{{ asset('images/user.png') }}" alt="User" class="profile-img">
 
 			<span class="profile-name">
-				{{ app.user ? app.user.username : 'Guest' }}
+				{{ app.user ? app.user.email|split('@')[0] : 'Guest' }}
 			</span>
 
 			<div class="profile-dropdown">
 				<ul>
-
 					<li><ahref="{{path('app_logout')}}">Logout</a></li>
 					<li><ahref="{{path('app_logout')}}">Logout</a></li>
-
 					<li><ahref="{{path('app_logout')}}">Logout</a></li>
-
 				</ul>
 			</div>
 		</div>
@@ -448,12 +445,7 @@ window.addEventListener('resize', drawChart);
 google.charts.setOnLoadCallback(drawProjectsChart);
 
 function drawProjectsChart() { // Prepare data from backend
-const monthlyProjects = [{% set started = false %}{% for value in monthlyProjects %}
-{% if value > 0 %}
-{% set started = true %}
-{% endif %}
-{{ started ? value : 'null' }}
-{% if not loop.last %},{% endif %}{% endfor %}];
+const monthlyProjects = [{% set started = false %}{% for value in monthlyProjects %}{% if value > 0 %}{% set started = true %}{% endif %}{{ started ? value : 'null' }}{% if not loop.last %},{% endif %}{% endfor %}];
 
 const dataArray = [
 [
