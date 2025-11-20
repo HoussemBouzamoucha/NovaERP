@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ page_title }}
+{% endblock %}
+
+{% block body %}
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<h2>{{ page_title }}</h2>
+		<a href="{{ path('app_' ~ entity ~ '_new') }}" class="btn btn-success">
+			+ Create
+			{{ entity|capitalize }}
+		</a>
+	</div>
+
+	<div class="table-responsive card-hover shadow-sm p-3">
+		<table class="table table-hover table-striped align-middle">
+			<thead class="table-dark">
+				<tr>
+					{% for column in columns %}
+						<th>{{ column|humanize }}</th>
+					{% endfor %}
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if items is not empty %}
+					{% for item in items %}
+						<tr>
+							{% for column in columns %}
+								{% set value = getField(item, column) %}
+								<td>
+									{% if value is iterable %}
+										{% for v in value %}
+											<span class="badge bg-info text-dark me-1">{{ v }}</span>
+										{% endfor %}
+									{% else %}
+										{{ value }}
+									{% endif %}
+								</td>
+							{% endfor %}
+
+							<td class="d-flex gap-1">
+								<a href="{{ path('app_' ~ entity ~ '_show', {id: item.id}) }}" class="btn btn-sm btn-info">View</a>
+								<a href="{{ path('app_' ~ entity ~ '_edit', {id: item.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+								<form method="post" action="{{ path('app_' ~ entity ~ '_delete', {id: item.id}) }}" onsubmit="return confirm('Are you sure?');">
+									<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+									<button class="btn btn-sm btn-danger">Delete</button>
+								</form>
+							</td>
+						</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td colspan="{{ columns|length + 1 }}" class="text-center text-muted">
+							No
+							{{ entity|capitalize }}
+							found
+						</td>
+					</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

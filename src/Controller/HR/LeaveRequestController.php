@@ -15,10 +15,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class LeaveRequestController extends AbstractController
 {
     #[Route(name: 'app_leave_request_index', methods: ['GET'])]
-    public function index(LeaveRequestRepository $leaveRequestRepository): Response
+    public function index(LeaveRequestRepository $leaveRequestRepository, EntityManagerInterface $em): Response
     {
-        return $this->render('leave_request/index.html.twig', [
-            'leave_requests' => $leaveRequestRepository->findAll(),
+        $items = $leaveRequestRepository->findAll();
+        $fields = $em->getClassMetadata(LeaveRequest::class)->getFieldNames();
+
+        return $this->render('CRUD/list.html.twig', [
+            'page_title' => 'Leave Requests',
+            'items' => $items,
+            'columns' => $fields,
+            'entity' => 'leave_request',
         ]);
     }
 
@@ -33,20 +39,28 @@ final class LeaveRequestController extends AbstractController
             $entityManager->persist($leaveRequest);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_leave_request_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_leave_request_index');
         }
 
-        return $this->render('leave_request/new.html.twig', [
-            'leave_request' => $leaveRequest,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Create Leave Request',
+            'form' => $form->createView(),
+            'submit_label' => 'Save', // <-- add this
+            'entity' => 'leave_request',
+
         ]);
     }
 
     #[Route('/{id}', name: 'app_leave_request_show', methods: ['GET'])]
-    public function show(LeaveRequest $leaveRequest): Response
+    public function show(LeaveRequest $leaveRequest, EntityManagerInterface $em): Response
     {
-        return $this->render('leave_request/show.html.twig', [
-            'leave_request' => $leaveRequest,
+        $fields = $em->getClassMetadata(LeaveRequest::class)->getFieldNames();
+
+        return $this->render('CRUD/show.html.twig', [
+            'page_title' => 'Leave Request Details',
+            'item' => $leaveRequest,
+            'columns' => $fields,
+            'entity' => 'leave_request',
         ]);
     }
 
@@ -58,24 +72,25 @@ final class LeaveRequestController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_leave_request_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_leave_request_index');
         }
 
-        return $this->render('leave_request/edit.html.twig', [
-            'leave_request' => $leaveRequest,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Edit Leave Request',
+            'form' => $form->createView(),
+            'submit_label' => 'Update Leave Request',
+            'entity' => 'leave_request',
         ]);
     }
 
     #[Route('/{id}', name: 'app_leave_request_delete', methods: ['POST'])]
     public function delete(Request $request, LeaveRequest $leaveRequest, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$leaveRequest->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $leaveRequest->getId(), $request->request->get('_token'))) {
             $entityManager->remove($leaveRequest);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_leave_request_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_leave_request_index');
     }
 }

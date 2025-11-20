@@ -15,10 +15,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class NotificationController extends AbstractController
 {
     #[Route(name: 'app_notification_index', methods: ['GET'])]
-    public function index(NotificationRepository $notificationRepository): Response
+    public function index(NotificationRepository $notificationRepository, EntityManagerInterface $em): Response
     {
-        return $this->render('notification/index.html.twig', [
-            'notifications' => $notificationRepository->findAll(),
+        $items = $notificationRepository->findAll();
+        $columns = $em->getClassMetadata(Notification::class)->getFieldNames();
+
+        return $this->render('CRUD/list.html.twig', [
+            'page_title' => 'Notifications',
+            'items' => $items,
+            'columns' => $columns,
+            'entity' => 'notification',
         ]);
     }
 
@@ -33,20 +39,25 @@ final class NotificationController extends AbstractController
             $entityManager->persist($notification);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_notification_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_notification_index');
         }
 
-        return $this->render('notification/new.html.twig', [
-            'notification' => $notification,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Create Notification',
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_notification_show', methods: ['GET'])]
-    public function show(Notification $notification): Response
+    public function show(Notification $notification, EntityManagerInterface $em): Response
     {
-        return $this->render('notification/show.html.twig', [
-            'notification' => $notification,
+        $columns = $em->getClassMetadata(Notification::class)->getFieldNames();
+
+        return $this->render('CRUD/show.html.twig', [
+            'page_title' => 'Notification Details',
+            'item' => $notification,
+            'columns' => $columns,
+            'entity' => 'notification',
         ]);
     }
 
@@ -58,24 +69,23 @@ final class NotificationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_notification_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_notification_index');
         }
 
-        return $this->render('notification/edit.html.twig', [
-            'notification' => $notification,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Edit Notification',
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_notification_delete', methods: ['POST'])]
     public function delete(Request $request, Notification $notification, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$notification->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$notification->getId(), $request->request->get('_token'))) {
             $entityManager->remove($notification);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_notification_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_notification_index');
     }
 }

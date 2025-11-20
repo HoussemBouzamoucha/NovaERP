@@ -15,10 +15,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ProjectController extends AbstractController
 {
     #[Route(name: 'app_project_index', methods: ['GET'])]
-    public function index(ProjectRepository $projectRepository): Response
+    public function index(ProjectRepository $projectRepository, EntityManagerInterface $em): Response
     {
-        return $this->render('project/index.html.twig', [
-            'projects' => $projectRepository->findAll(),
+        $items = $projectRepository->findAll();
+        $columns = $em->getClassMetadata(Project::class)->getFieldNames();
+
+        return $this->render('CRUD/list.html.twig', [
+            'page_title' => 'Projects',
+            'items' => $items,
+            'columns' => $columns,
+            'entity' => 'project',
         ]);
     }
 
@@ -33,20 +39,28 @@ final class ProjectController extends AbstractController
             $entityManager->persist($project);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_project_index');
         }
 
-        return $this->render('project/new.html.twig', [
-            'project' => $project,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Create Project',
+            'form' => $form->createView(),
+            'submit_label' => 'Save', // <-- add this
+            'entity' => 'project',
+
         ]);
     }
 
     #[Route('/{id}', name: 'app_project_show', methods: ['GET'])]
-    public function show(Project $project): Response
+    public function show(Project $project, EntityManagerInterface $em): Response
     {
-        return $this->render('project/show.html.twig', [
-            'project' => $project,
+        $columns = $em->getClassMetadata(Project::class)->getFieldNames();
+
+        return $this->render('CRUD/show.html.twig', [
+            'page_title' => 'Project Details',
+            'item' => $project,
+            'columns' => $columns,
+            'entity' => 'project',
         ]);
     }
 
@@ -58,24 +72,23 @@ final class ProjectController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_project_index');
         }
 
-        return $this->render('project/edit.html.twig', [
-            'project' => $project,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Edit Project',
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_project_delete', methods: ['POST'])]
     public function delete(Request $request, Project $project, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$project->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$project->getId(), $request->request->get('_token'))) {
             $entityManager->remove($project);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_project_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_project_index');
     }
 }

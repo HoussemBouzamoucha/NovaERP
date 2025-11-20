@@ -15,10 +15,18 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AttendanceController extends AbstractController
 {
     #[Route(name: 'app_attendance_index', methods: ['GET'])]
-    public function index(AttendanceRepository $attendanceRepository): Response
+    public function index(AttendanceRepository $attendanceRepository, EntityManagerInterface $em): Response
     {
-        return $this->render('attendance/index.html.twig', [
-            'attendances' => $attendanceRepository->findAll(),
+        $attendances = $attendanceRepository->findAll();
+
+        // Auto-detect entity fields
+        $columns = $em->getClassMetadata(Attendance::class)->getFieldNames();
+
+        return $this->render('crud/list.html.twig', [
+            'page_title' => 'Attendances',
+            'items' => $attendances,
+            'columns' => $columns,
+            'entity' => 'attendance',
         ]);
     }
 
@@ -33,20 +41,27 @@ final class AttendanceController extends AbstractController
             $entityManager->persist($attendance);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_attendance_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_attendance_index');
         }
 
-        return $this->render('attendance/new.html.twig', [
-            'attendance' => $attendance,
-            'form' => $form,
+        return $this->render('crud/form.html.twig', [
+            'page_title' => 'Create Attendance',
+            'form' => $form->createView(),
+            'submit_label' => 'Save Attendance',
+            'entity' => 'attendance',
         ]);
     }
 
     #[Route('/{id}', name: 'app_attendance_show', methods: ['GET'])]
-    public function show(Attendance $attendance): Response
+    public function show(Attendance $attendance, EntityManagerInterface $em): Response
     {
-        return $this->render('attendance/show.html.twig', [
-            'attendance' => $attendance,
+        $columns = $em->getClassMetadata(Attendance::class)->getFieldNames();
+
+        return $this->render('crud/show.html.twig', [
+            'page_title' => 'Attendance Details',
+            'item' => $attendance,
+            'columns' => $columns,
+            'entity' => 'attendance',
         ]);
     }
 
@@ -59,12 +74,14 @@ final class AttendanceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_attendance_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_attendance_index');
         }
 
-        return $this->render('attendance/edit.html.twig', [
-            'attendance' => $attendance,
-            'form' => $form,
+        return $this->render('crud/form.html.twig', [
+            'page_title' => 'Edit Attendance',
+            'form' => $form->createView(),
+            'submit_label' => 'Update Attendance',
+            'entity' => 'attendance',
         ]);
     }
 
@@ -76,6 +93,6 @@ final class AttendanceController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_attendance_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_attendance_index');
     }
 }

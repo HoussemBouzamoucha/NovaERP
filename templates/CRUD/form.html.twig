@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ page_title }}
+{% endblock %}
+
+{% block body %}
+	<div class="card card-hover shadow-sm p-4 mb-4">
+		<h2 class="mb-3">{{ page_title }}</h2>
+
+		{{ form_start(form) }}
+		<div class="row g-3">
+			{{ form_widget(form) }}
+		</div>
+		<button class="btn btn-primary mt-3">{{ submit_label }}</button>
+		{{ form_end(form) }}
+	</div>
+
+	<a href="{{ path('app_' ~ entity ~ '_index') }}" class="btn btn-secondary">Back to list</a>
+{% endblock %}

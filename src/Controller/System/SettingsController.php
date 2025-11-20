@@ -15,10 +15,16 @@ use Symfony\Component\Routing\Attribute\Route;
 final class SettingsController extends AbstractController
 {
     #[Route(name: 'app_settings_index', methods: ['GET'])]
-    public function index(SettingsRepository $settingsRepository): Response
+    public function index(SettingsRepository $settingsRepository, EntityManagerInterface $em): Response
     {
-        return $this->render('settings/index.html.twig', [
-            'settings' => $settingsRepository->findAll(),
+        $items = $settingsRepository->findAll();
+        $columns = $em->getClassMetadata(Settings::class)->getFieldNames();
+
+        return $this->render('CRUD/list.html.twig', [
+            'page_title' => 'Settings',
+            'items' => $items,
+            'columns' => $columns,
+            'entity' => 'settings',
         ]);
     }
 
@@ -33,20 +39,25 @@ final class SettingsController extends AbstractController
             $entityManager->persist($setting);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_settings_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_settings_index');
         }
 
-        return $this->render('settings/new.html.twig', [
-            'setting' => $setting,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Create Setting',
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_settings_show', methods: ['GET'])]
-    public function show(Settings $setting): Response
+    public function show(Settings $setting, EntityManagerInterface $em): Response
     {
-        return $this->render('settings/show.html.twig', [
-            'setting' => $setting,
+        $columns = $em->getClassMetadata(Settings::class)->getFieldNames();
+
+        return $this->render('CRUD/show.html.twig', [
+            'page_title' => 'Settings Details',
+            'item' => $setting,
+            'columns' => $columns,
+            'entity' => 'settings',
         ]);
     }
 
@@ -58,24 +69,23 @@ final class SettingsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_settings_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_settings_index');
         }
 
-        return $this->render('settings/edit.html.twig', [
-            'setting' => $setting,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Edit Setting',
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_settings_delete', methods: ['POST'])]
     public function delete(Request $request, Settings $setting, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$setting->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$setting->getId(), $request->request->get('_token'))) {
             $entityManager->remove($setting);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_settings_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_settings_index');
     }
 }

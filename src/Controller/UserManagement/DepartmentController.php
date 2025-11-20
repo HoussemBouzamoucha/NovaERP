@@ -15,12 +15,26 @@ use Symfony\Component\Routing\Attribute\Route;
 final class DepartmentController extends AbstractController
 {
     #[Route(name: 'app_department_index', methods: ['GET'])]
-    public function index(DepartmentRepository $departmentRepository): Response
-    {
-        return $this->render('department/index.html.twig', [
-            'departments' => $departmentRepository->findAll(),
-        ]);
+public function index(DepartmentRepository $departmentRepository): Response
+{
+    $departments = $departmentRepository->findAll();
+
+    // Dynamically get all properties (columns) using Reflection
+    $columns = [];
+    if (!empty($departments)) {
+        $reflection = new \ReflectionClass($departments[0]);
+        foreach ($reflection->getProperties() as $prop) {
+            $columns[] = $prop->getName();
+        }
     }
+
+    return $this->render('crud/list.html.twig', [
+        'page_title' => 'Departments',
+        'items' => $departments,
+        'columns' => $columns,
+        'entity' => 'department',
+    ]);
+}
 
     #[Route('/new', name: 'app_department_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -36,17 +50,21 @@ final class DepartmentController extends AbstractController
             return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('department/new.html.twig', [
-            'department' => $department,
-            'form' => $form,
+        return $this->render('crud/form.html.twig', [
+            'page_title' => 'Create Department',
+            'form' => $form->createView(),
+            'submit_label' => 'Save Department',
+            'entity' => 'department',
         ]);
     }
 
     #[Route('/{id}', name: 'app_department_show', methods: ['GET'])]
     public function show(Department $department): Response
     {
-        return $this->render('department/show.html.twig', [
-            'department' => $department,
+        return $this->render('crud/show.html.twig', [
+            'page_title' => 'Department Details',
+            'item' => $department,
+            'entity' => 'department',
         ]);
     }
 
@@ -58,20 +76,21 @@ final class DepartmentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('department/edit.html.twig', [
-            'department' => $department,
-            'form' => $form,
+        return $this->render('crud/form.html.twig', [
+            'page_title' => 'Edit Department',
+            'form' => $form->createView(),
+            'submit_label' => 'Update Department',
+            'entity' => 'department',
         ]);
     }
 
     #[Route('/{id}', name: 'app_department_delete', methods: ['POST'])]
     public function delete(Request $request, Department $department, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$department->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$department->getId(), $request->request->get('_token'))) {
             $entityManager->remove($department);
             $entityManager->flush();
         }

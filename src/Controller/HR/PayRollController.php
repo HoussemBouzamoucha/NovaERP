@@ -11,14 +11,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/pay/roll')]
+#[Route('/payroll')]
 final class PayRollController extends AbstractController
 {
     #[Route(name: 'app_pay_roll_index', methods: ['GET'])]
-    public function index(PayRollRepository $payRollRepository): Response
+    public function index(PayRollRepository $payRollRepository, EntityManagerInterface $em): Response
     {
-        return $this->render('pay_roll/index.html.twig', [
-            'pay_rolls' => $payRollRepository->findAll(),
+        $items = $payRollRepository->findAll();
+        $fields = $em->getClassMetadata(PayRoll::class)->getFieldNames();
+
+        return $this->render('CRUD/list.html.twig', [
+            'page_title' => 'Payroll Records',
+            'items' => $items,
+            'columns' => $fields,
+            'entity' => 'pay_roll',
         ]);
     }
 
@@ -33,20 +39,27 @@ final class PayRollController extends AbstractController
             $entityManager->persist($payRoll);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_pay_roll_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_pay_roll_index');
         }
 
-        return $this->render('pay_roll/new.html.twig', [
-            'pay_roll' => $payRoll,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Create Payroll Record',
+            'form' => $form->createView(),
+            'submit_label' => 'Save', // <-- add this
+            'entity' => 'pay_roll',
         ]);
     }
 
     #[Route('/{id}', name: 'app_pay_roll_show', methods: ['GET'])]
-    public function show(PayRoll $payRoll): Response
+    public function show(PayRoll $payRoll, EntityManagerInterface $em): Response
     {
-        return $this->render('pay_roll/show.html.twig', [
-            'pay_roll' => $payRoll,
+        $fields = $em->getClassMetadata(PayRoll::class)->getFieldNames();
+
+        return $this->render('CRUD/show.html.twig', [
+            'page_title' => 'Payroll Details',
+            'item' => $payRoll,
+            'columns' => $fields,
+            'entity' => 'pay_roll',
         ]);
     }
 
@@ -58,24 +71,25 @@ final class PayRollController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_pay_roll_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_pay_roll_index');
         }
 
-        return $this->render('pay_roll/edit.html.twig', [
-            'pay_roll' => $payRoll,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Edit Payroll Record',
+            'form' => $form->createView(),
+            'submit_label' => 'Update Payroll Record',
+            'entity' => 'pay_roll',
         ]);
     }
 
     #[Route('/{id}', name: 'app_pay_roll_delete', methods: ['POST'])]
     public function delete(Request $request, PayRoll $payRoll, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$payRoll->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $payRoll->getId(), $request->request->get('_token'))) {
             $entityManager->remove($payRoll);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_pay_roll_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_pay_roll_index');
     }
 }

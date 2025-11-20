@@ -17,9 +17,22 @@ final class ClientController extends AbstractController
     #[Route(name: 'app_client_index', methods: ['GET'])]
     public function index(ClientRepository $clientRepository): Response
     {
-        return $this->render('client/index.html.twig', [
-            'clients' => $clientRepository->findAll(),
-        ]);
+    $clients = $clientRepository->findAll();
+    $columns = [];
+    // Dynamically get columns from the first item if exists
+    if (!empty($clients)) {
+        $reflection = new \ReflectionClass($clients[0]);
+        foreach ($reflection->getProperties() as $prop) {
+            $columns[] = $prop->getName();
+        }
+    }
+
+    return $this->render('crud/list.html.twig', [
+        'page_title' => 'Clients',
+        'items' => $clients,
+        'columns' => $columns,
+        'entity' => 'client',
+    ]);
     }
 
     #[Route('/new', name: 'app_client_new', methods: ['GET', 'POST'])]
@@ -36,17 +49,21 @@ final class ClientController extends AbstractController
             return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('client/new.html.twig', [
-            'client' => $client,
-            'form' => $form,
+        return $this->render('crud/form.html.twig', [
+            'page_title' => 'Create Client',
+            'form' => $form->createView(),
+            'submit_label' => 'Save Client',
+            'entity' => 'client',
         ]);
     }
 
     #[Route('/{id}', name: 'app_client_show', methods: ['GET'])]
     public function show(Client $client): Response
     {
-        return $this->render('client/show.html.twig', [
-            'client' => $client,
+        return $this->render('crud/show.html.twig', [
+            'page_title' => 'Client Details',
+            'item' => $client,
+            'entity' => 'client',
         ]);
     }
 
@@ -58,20 +75,21 @@ final class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
             return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('client/edit.html.twig', [
-            'client' => $client,
-            'form' => $form,
+        return $this->render('crud/form.html.twig', [
+            'page_title' => 'Edit Client',
+            'form' => $form->createView(),
+            'submit_label' => 'Update Client',
+            'entity' => 'client',
         ]);
     }
 
     #[Route('/{id}', name: 'app_client_delete', methods: ['POST'])]
     public function delete(Request $request, Client $client, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
             $entityManager->remove($client);
             $entityManager->flush();
         }

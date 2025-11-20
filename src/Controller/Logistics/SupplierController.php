@@ -15,10 +15,18 @@ use Symfony\Component\Routing\Attribute\Route;
 final class SupplierController extends AbstractController
 {
     #[Route(name: 'app_supplier_index', methods: ['GET'])]
-    public function index(SupplierRepository $supplierRepository): Response
+    public function index(SupplierRepository $supplierRepository, EntityManagerInterface $em): Response
     {
-        return $this->render('supplier/index.html.twig', [
-            'suppliers' => $supplierRepository->findAll(),
+        $items = $supplierRepository->findAll();
+
+        // Get all entity field names dynamically
+        $columns = $em->getClassMetadata(Supplier::class)->getFieldNames();
+
+        return $this->render('CRUD/list.html.twig', [
+            'page_title' => 'Suppliers',
+            'items' => $items,
+            'columns' => $columns,
+            'entity' => 'supplier',
         ]);
     }
 
@@ -33,20 +41,27 @@ final class SupplierController extends AbstractController
             $entityManager->persist($supplier);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_supplier_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_supplier_index');
         }
 
-        return $this->render('supplier/new.html.twig', [
-            'supplier' => $supplier,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Create Supplier',
+            'form' => $form->createView(),
+            'submit_label' => 'Save', // <-- add this
+            'entity' => 'supplier',
         ]);
     }
 
     #[Route('/{id}', name: 'app_supplier_show', methods: ['GET'])]
-    public function show(Supplier $supplier): Response
+    public function show(Supplier $supplier, EntityManagerInterface $em): Response
     {
-        return $this->render('supplier/show.html.twig', [
-            'supplier' => $supplier,
+        $columns = $em->getClassMetadata(Supplier::class)->getFieldNames();
+
+        return $this->render('CRUD/show.html.twig', [
+            'page_title' => 'Supplier Details',
+            'item' => $supplier,
+            'columns' => $columns,
+            'entity' => 'supplier',
         ]);
     }
 
@@ -59,23 +74,23 @@ final class SupplierController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_supplier_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_supplier_index');
         }
 
-        return $this->render('supplier/edit.html.twig', [
-            'supplier' => $supplier,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Edit Supplier',
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_supplier_delete', methods: ['POST'])]
     public function delete(Request $request, Supplier $supplier, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$supplier->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$supplier->getId(), $request->request->get('_token'))) {
             $entityManager->remove($supplier);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_supplier_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_supplier_index');
     }
 }

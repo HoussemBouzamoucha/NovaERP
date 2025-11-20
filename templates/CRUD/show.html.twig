@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ page_title }}
+{% endblock %}
+
+{% block body %}
+	<div class="card shadow-sm mb-4">
+		<div class="card-header bg-primary text-white">
+			<h2 class="mb-0">{{ page_title }}</h2>
+		</div>
+		<div class="card-body p-4">
+
+			{% set fields = getFields(item) %}
+
+			{% if fields is not empty %}
+				<ul class="list-group list-group-flush">
+					{% for field in fields %}
+						{% set value = getField(item, field) %}
+
+						<li class="list-group-item d-flex justify-content-between align-items-start {% if loop.index is odd %}bg-light{% endif %}">
+							<div class="fw-bold text-secondary">{{ field|humanize }}</div>
+
+							{% if value is iterable %}
+								<div>
+									{% for v in value %}
+										<span class="badge bg-info text-dark me-1">{{ v }}</span>
+									{% endfor %}
+								</div>
+							{% else %}
+								<div>{{ value }}</div>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<p class="text-muted">No data available.</p>
+			{% endif %}
+
+		</div>
+		<div class="card-footer">
+			<a href="{{ path('app_' ~ entity ~ '_index') }}" class="btn btn-secondary">Back to list</a>
+		</div>
+	</div>
+{% endblock %}

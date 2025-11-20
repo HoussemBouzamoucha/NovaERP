@@ -15,12 +15,20 @@ use Symfony\Component\Routing\Attribute\Route;
 final class InventoryController extends AbstractController
 {
     #[Route(name: 'app_inventory_index', methods: ['GET'])]
-    public function index(InventoryRepository $inventoryRepository): Response
-    {
-        return $this->render('inventory/index.html.twig', [
-            'inventories' => $inventoryRepository->findAll(),
-        ]);
-    }
+    public function index(InventoryRepository $inventoryRepository, EntityManagerInterface $em): Response
+{
+    $items = $inventoryRepository->findAll();
+
+    // Get all entity field names dynamically
+    $columns = $em->getClassMetadata(Inventory::class)->getFieldNames();
+
+    return $this->render('CRUD/list.html.twig', [
+        'page_title' => 'Inventory Items',
+        'items' => $items,
+        'columns' => $columns,   // must match Twig variable name
+        'entity' => 'inventory',  // for generating routes in Twig
+    ]);
+}
 
     #[Route('/new', name: 'app_inventory_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -33,20 +41,27 @@ final class InventoryController extends AbstractController
             $entityManager->persist($inventory);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_inventory_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_inventory_index');
         }
 
-        return $this->render('inventory/new.html.twig', [
-            'inventory' => $inventory,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Create Inventory Item',
+            'form' => $form->createView(),
+            'submit_label' => 'Save', 
+            'entity' => 'inventory',
         ]);
     }
 
     #[Route('/{id}', name: 'app_inventory_show', methods: ['GET'])]
-    public function show(Inventory $inventory): Response
+    public function show(Inventory $inventory, EntityManagerInterface $em): Response
     {
-        return $this->render('inventory/show.html.twig', [
-            'inventory' => $inventory,
+        $columns = $em->getClassMetadata(Inventory::class)->getFieldNames();
+
+        return $this->render('CRUD/show.html.twig', [
+            'page_title' => 'Inventory Details',
+            'item' => $inventory,
+            'fields' => $columns, // dynamic columns
+            'entity' => 'inventory',
         ]);
     }
 
@@ -58,24 +73,25 @@ final class InventoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_inventory_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_inventory_index');
         }
 
-        return $this->render('inventory/edit.html.twig', [
-            'inventory' => $inventory,
-            'form' => $form,
+        return $this->render('CRUD/form.html.twig', [
+            'page_title' => 'Edit Inventory Item',
+            'form' => $form->createView(),
+            'submit_label' => 'Update Inventory Item',
+            'entity' => 'inventory',
         ]);
     }
 
     #[Route('/{id}', name: 'app_inventory_delete', methods: ['POST'])]
     public function delete(Request $request, Inventory $inventory, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$inventory->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $inventory->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($inventory);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_inventory_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_inventory_index');
     }
 }
