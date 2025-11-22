@@ -1,451 +1,856 @@
-{# templates/dashboard/index.html.twig #}
-<header class="top-bar">
-	<div
-		class="top-left">
-		<!-- Search Bar -->
-		<form class="search-form">
-			<input type="text" placeholder="Search..." class="search-input">
-		</form>
-	</div>
+{% extends 'base.html.twig' %}
 
-	<div
-		class="top-right">
-		<!-- Profile Section -->
-		<div class="profile-wrapper">
-			<img src="{{ asset('images/user.png') }}" alt="User" class="profile-img">
+{% block title %}Admin Dashboard - NovaERP
+{% endblock %}
 
-			<span class="profile-name">
-				{{ app.user ? app.user.email|split('@')[0] : 'Guest' }}
-			</span>
-
-			<div class="profile-dropdown">
-				<ul>
-					<li><ahref="{{path('app_logout')}}">Logout</a></li>
-					<li><ahref="{{path('app_logout')}}">Logout</a></li>
-					<li><ahref="{{path('app_logout')}}">Logout</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</header>
-<h2 style="margin-left: 220px;">Dashboard</h2>
-<h3>
-	Welcome back,{{ app.user.firstName ?? 'User' }}!
-</h3>
-
-<h4>Here's what's happening with your business today.</h4>
-
-<div class="side-bar">
-	<ul class="sidebar-menu">
-		<li class="menu-item">
-			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 6h6m0 0v6H5v-6h6v-6H5v6h6v6"/>
-			</svg>
-			Dashboard
-		</li>
-		<li class="menu-item">
-			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A4 4 0 0112 14a4 4 0 016.879 3.804M12 14a4 4 0 100-8 4 4 0 000 8z"/>
-			</svg>
-			<a href="{{ path('app_users_index') }}" class="btn btn-warning">Users</a>
-
-
-		</li>
-		<li class="menu-item">
-			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7H3z"/>
-			</svg>
-			<a href="{{ path('app_client_index') }}" class="btn btn-warning">Clients</a>
-
-		</li>
-		<li class="menu-item">
-			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m2 0a2 2 0 012 2v6H5v-6a2 2 0 012-2h6"/>
-			</svg>
-			<a href="{{ path('app_project_index') }}" class="btn btn-warning">Projects</a>
-		</li>
-		<li class="menu-item">
-			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6M12 7v0m0 0a9 9 0 100 18 9 9 0 000-18z"/>
-			</svg>
-			<a href="{{ path('app_invoice_index') }}" class="btn btn-warning">Invoices</a>
-		</li>
-		<li class="menu-item">
-			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"/>
-			</svg>
-			<a href="{{ path('app_inventory_index') }}" class="btn btn-warning">Inventory</a>
-		</li>
-		<li class="menu-item">
-			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h4l3 9 4-18 3 9h4"/>
-			</svg>
-			<a href="{{ path('app_supplier_index') }}" class="btn btn-warning">Suppliers</a>
-		</li>
-		<li class="menu-item">
-			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m2 0a2 2 0 012 2v6H5v-6a2 2 0 012-2h6"/>
-			</svg>
-			<a href="{{ path('app_leave_request_index') }}" class="btn btn-warning">Leave Requests</a>
-		</li>
-		<li class="menu-item">
-			<svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewbox="0 0 24 24" stroke="currentColor" width="20" height="20">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-			</svg>
-			<a href="{{ path('app_settings_index') }}" class="btn btn-warning">Settings</a>
-		</li>
-	</ul>
-</div>
-
-
-<div class="dashboard-cards">
-	<div class="card">
-		<div class="card-content">
-			<div
-				class="icon">
-				<!-- SVG: Projects -->
-				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#3498db" viewbox="0 0 24 24"><path d="M3 4a1 1 0 0 1 1-1h6l2 2h9a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z"/></svg>
-			</div>
-			<div class="card-text">
-				<h3>Total Projects</h3>
-				<p>{{ totalProjects }}</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="card">
-		<div class="card-content">
-			<div
-				class="icon">
-				<!-- SVG: Clients -->
-				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#2ecc71" viewbox="0 0 24 24"><path d="M16 14c2.667 0 8 1.333 8 4v2H0v-2c0-2.667 5.333-4 8-4s8-1.333 8-4c0 2.667-5.333 4-8 4s-8-1.333-8-4c0 2.667 5.333 4 8 4zM12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5z"/></svg>
-			</div>
-			<div class="card-text">
-				<h3>Active Clients</h3>
-				<p>{{ activeClients }}</p>
-			</div>
-		</div>
-	</div>
-
-	<div class="card">
-		<div class="card-content">
-			<div
-				class="icon">
-				<!-- SVG: Pending Invoices -->
-				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#e74c3c" viewbox="0 0 24 24"><path d="M19 2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-1 16H6v-2h12zm0-4H6v-2h12zm0-4H6V8h12z"/></svg>
-			</div>
-			<div class="card-text">
-				<h3>Pending Invoices</h3>
-				<p>{{ pendingInvoices }}</p>
-			</div>
-		</div>
-	</div>
-	<div class="card">
-		<div class="card-content">
-			<div
-				class="icon">
-				<!-- SVG: Pending Leave -->
-				<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#f39c12" viewbox="0 0 24 24"><path d="M12 1a11 11 0 1 0 11 11A11.012 11.012 0 0 0 12 1zm1 12h-5V11h4V6h2z"/></svg>
-			</div>
-			<div class="card-text">
-				<h3>Pending Leave Requests</h3>
-				<p>{{ pendingLeaves }}</p>
-			</div>
-		</div>
-	</div>
-</div>
-
-<style>
-
-	body {
-
-		background-color: #f4f4f4ff;
-		margin-left: 250px; /* leave space for menu */
-		font-family: Arial, sans-serif;
-	}
-
-	.dashboard-cards {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-evenly;
-		gap: 16px;
-		margin-top: 20px;
-	}
-
-	.card {
-		background-color: white;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		padding: 16px;
-		flex: 1 1 200px;
-		max-width: 250px;
-		display: flex;
-		align-items: center;
-		transition: all 0.3s ease; /* smooth hover effect */
-		cursor: pointer;
-	}
-
-	.card:hover {
-		transform: translateY(-5px) scale(1.03); /* lift and scale */
-		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-		border-color: #ccc;
-	}
-
-	.card-content {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-	}
-
-	.icon {
-		flex-shrink: 0;
-	}
-
-	.card-text h3 {
-		margin: 0 0 8px;
-		font-size: 1rem;
-	}
-
-	.card-text p {
-		margin: 0;
-		font-size: 1.2rem;
-		font-weight: bold;
-	}
-
-
-	.side-bar {
-		width: 220px;
-		background-color: #2c3e50;
-		color: white;
-		position: fixed; /* fixed on left side */
-		top: 0;
-		left: 0;
-		bottom: 0;
-		padding-top: 20px;
-		padding-left: 20px;
-		box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-		font-family: Arial, sans-serif;
-	}
-
-	.sidebar-menu {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.menu-item {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		padding: 10px 5px;
-		cursor: pointer;
-		transition: background 0.2s;
-	}
-
-	.menu-item:hover {
-		background-color: #34495e;
-		padding-left: 25px; /* subtle slide effect */
-	}
-	.icon {
-		flex-shrink: 0;
-	}
-
-	a {
-		color: white;
-		background-color: transparent;
-		text-decoration: none;
-
-	}
-
-
-	.top-bar {
-		width: 97%;
-		height: 60px;
-		background: #ffffff;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0 20px;
-		border-bottom: 1px solid #ddd;
-	}
-
-	.search-form {
-		width: 300px;
-	}
-
-	.search-input {
-		width: 200%;
-		padding: 8px 12px;
-		border-radius: 8px;
-		border: 1px solid #ccc;
-	}
-
-	.profile-wrapper .profile-dropdown {
-		position: absolute;
-		top: 50px;
-		right: 0;
-		width: 160px;
-		max-width: 100%; /* never exceed viewport width */
-		background: white;
-		border-radius: 8px;
-		border: 1px solid #ddd;
-		display: none;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-		z-index: 1000;
-	}
-	.profile-img {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		margin-right: 10px;
-	}
-
-	.profile-name {
-		font-weight: 500;
-	}
-
-	.profile-dropdown {
-		position: absolute;
-		top: 55px;
-		right: 0;
-		background: white;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		width: 150px;
-		display: none;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	}
-
-	.profile-dropdown ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.profile-dropdown li {
-		padding: 10px;
-	}
-
-	.profile-dropdown li:hover {
-		background: #eee;
-	}
-
-	.profile-wrapper:hover .profile-dropdown {
-		display: block;
-	}
-</style>
-
-
-{% block body %}
-	<h2 class="mb-4">Quick Actions</h2>
-
-	<div
-		class="quick-actions-row">
-		<!-- Create Invoice -->
-		<div class="card text-center quick-action-card">
-			<div class="card-body">
-				<i class="bi bi-file-earmark-plus-fill fs-1 mb-2"></i>
-				<h5 class="card-title">Create Invoice</h5>
-				<p class="card-text">Generate a new invoice for a client quickly.</p>
-				<a href="{{ path('app_invoice_new') }}" class="btn btn-primary">Go</a>
-			</div>
-		</div>
-
-		<!-- Add Client -->
-		<div class="card text-center quick-action-card">
-			<div class="card-body">
-				<i class="bi bi-people-fill fs-1 mb-2"></i>
-				<h5 class="card-title">Add Client</h5>
-				<p class="card-text">Register a new client in the system.</p>
-				<a href="{{ path('app_client_new') }}" class="btn btn-success">Go</a>
-			</div>
-		</div>
-
-		<!-- Request Leave -->
-		<div class="card text-center quick-action-card">
-			<div class="card-body">
-				<i class="bi bi-calendar-plus-fill fs-1 mb-2"></i>
-				<h5 class="card-title">Request Leave</h5>
-				<p class="card-text">Submit a leave request easily.</p>
-				<a href="{{ path('app_leave_request_new') }}" class="btn btn-warning">Go</a>
-			</div>
-		</div>
-	</div>
+{% block stylesheets %}
+	{{ parent() }}
 	<style>
-		.quick-action-card {
-			transition: transform 0.2s, box-shadow 0.2s;
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
 		}
-		.quick-action-card:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+
+		body {
+			background: #f8f9fa;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+			color: #1e293b;
+		}
+
+		.top-navbar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 70px;
+			background: white;
+			border-bottom: 1px solid #e2e8f0;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 2rem;
+			z-index: 1000;
+		}
+
+		.navbar-brand {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: #2563eb;
+			text-decoration: none;
+		}
+
+		.navbar-subtitle {
+			font-size: 0.875rem;
+			color: #64748b;
+			font-weight: 400;
+		}
+
+		.navbar-right {
+			display: flex;
+			align-items: center;
+			gap: 1.5rem;
+		}
+
+		.search-form {
+			position: relative;
+		}
+
+		.search-input {
+			width: 350px;
+			padding: 0.75rem 1rem 0.75rem 2.75rem;
+			border: 1px solid #e2e8f0;
+			border-radius: 10px;
+			font-size: 0.95rem;
+			transition: all 0.3s ease;
+			background: #f8f9fa;
+		}
+
+		.search-input:focus {
+			outline: none;
+			border-color: #2563eb;
+			background: white;
+			box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+		}
+
+		.search-icon {
+			position: absolute;
+			left: 1rem;
+			top: 50%;
+			transform: translateY(-50%);
+			color: #94a3b8;
+		}
+
+		.notification-bell {
+			position: relative;
+			width: 40px;
+			height: 40px;
+			border-radius: 10px;
+			background: #f1f5f9;
+			border: none;
+			color: #64748b;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all 0.3s ease;
+		}
+
+		.notification-bell:hover {
+			background: #e2e8f0;
+		}
+
+		.notification-badge {
+			position: absolute;
+			top: -5px;
+			right: -5px;
+			background: #ef4444;
+			color: white;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			font-size: 0.75rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 600;
+		}
+
+		.user-profile {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+			cursor: pointer;
+		}
+
+		.user-avatar {
+			width: 40px;
+			height: 40px;
+			border-radius: 10px;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 700;
+		}
+
+		.user-info {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.user-name {
+			font-weight: 600;
+			font-size: 0.95rem;
+			color: #1e293b;
+		}
+
+		.user-role {
+			font-size: 0.75rem;
+			color: #64748b;
+		}
+
+		.sidebar {
+			width: 260px;
+			background: white;
+			position: fixed;
+			top: 70px;
+			left: 0;
+			bottom: 0;
+			border-right: 1px solid #e2e8f0;
+			overflow-y: auto;
+			z-index: 100;
+		}
+
+		.sidebar-menu {
+			list-style: none;
+			padding: 1.5rem 1rem;
+		}
+
+		.menu-item {
+			margin: 0.25rem 0;
+		}
+
+		.menu-item a {
+			display: flex;
+			align-items: center;
+			gap: 0.875rem;
+			padding: 0.875rem 1rem;
+			color: #64748b;
+			text-decoration: none;
+			border-radius: 10px;
+			transition: all 0.3s ease;
+			font-size: 0.95rem;
+			font-weight: 500;
+		}
+
+		.menu-item a:hover {
+			background: #f1f5f9;
+			color: #1e293b;
+		}
+
+		.menu-item.active a {
+			background: #eff6ff;
+			color: #2563eb;
+			font-weight: 600;
+		}
+
+		.menu-icon {
+			width: 20px;
+			height: 20px;
+			flex-shrink: 0;
+		}
+
+		.dashboard-wrapper {
+			display: flex;
+		}
+
+		.dashboard-content {
+			flex: 1;
+			margin-left: 260px;
+			margin-top: 70px;
+			padding: 2rem;
+			min-height: calc(100vh - 70px);
+		}
+
+		.welcome-section {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border-radius: 16px;
+			padding: 2.5rem;
+			margin-bottom: 2rem;
+			color: white;
+		}
+
+		.welcome-section h2 {
+			font-size: 2rem;
+			font-weight: 700;
+			margin-bottom: 0.5rem;
+		}
+
+		.welcome-section p {
+			font-size: 1.1rem;
+			opacity: 0.9;
+		}
+
+		.dashboard-cards {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+			gap: 1.5rem;
+			margin-bottom: 2rem;
+		}
+
+		.stat-card {
+			background: white;
+			border-radius: 16px;
+			padding: 1.75rem;
+			border: 1px solid #e2e8f0;
+			transition: all 0.3s ease;
+			cursor: pointer;
+		}
+
+		.stat-card:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+		}
+
+		.stat-card-content {
+			display: flex;
+			align-items: flex-start;
+			gap: 1rem;
+		}
+
+		.stat-icon {
+			width: 56px;
+			height: 56px;
+			border-radius: 14px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1.75rem;
+			flex-shrink: 0;
+		}
+
+		.stat-icon.blue {
+			background: #eff6ff;
+			color: #2563eb;
+		}
+		.stat-icon.green {
+			background: #f0fdf4;
+			color: #16a34a;
+		}
+		.stat-icon.red {
+			background: #fef2f2;
+			color: #dc2626;
+		}
+		.stat-icon.yellow {
+			background: #fffbeb;
+			color: #f59e0b;
+		}
+		.stat-icon.purple {
+			background: #faf5ff;
+			color: #9333ea;
+		}
+		.stat-icon.indigo {
+			background: #eef2ff;
+			color: #6366f1;
+		}
+		.stat-icon.pink {
+			background: #fdf2f8;
+			color: #ec4899;
+		}
+		.stat-icon.teal {
+			background: #f0fdfa;
+			color: #14b8a6;
+		}
+
+		.stat-info {
+			flex: 1;
+		}
+
+		.stat-info h3 {
+			font-size: 0.875rem;
+			color: #64748b;
+			font-weight: 500;
+			margin-bottom: 0.5rem;
+		}
+
+		.stat-value {
+			font-size: 2.25rem;
+			font-weight: 700;
+			color: #1e293b;
+			margin-bottom: 0.25rem;
+		}
+
+		.stat-change {
+			font-size: 0.875rem;
+			font-weight: 500;
+		}
+
+		.stat-change.positive {
+			color: #16a34a;
+		}
+		.stat-change.negative {
+			color: #dc2626;
+		}
+
+		.section-header {
+			margin: 2.5rem 0 1.5rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.section-header h2 {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: #1e293b;
+		}
+
+		.quick-actions {
+			display: flex;
+			gap: 1rem;
+			margin-bottom: 2rem;
+			flex-wrap: wrap;
+		}
+
+		.action-btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			padding: 1rem 1.75rem;
+			border-radius: 12px;
+			text-decoration: none;
+			font-weight: 600;
+			font-size: 0.95rem;
+			transition: all 0.3s ease;
+			border: none;
+			cursor: pointer;
+		}
+
+		.btn-primary {
+			background: #2563eb;
+			color: white;
+		}
+
+		.btn-primary:hover {
+			background: #1d4ed8;
+			transform: translateY(-2px);
+			box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
+			color: white;
+		}
+
+		.btn-success {
+			background: #16a34a;
+			color: white;
+		}
+
+		.btn-success:hover {
+			background: #15803d;
+			transform: translateY(-2px);
+			box-shadow: 0 8px 16px rgba(22, 163, 74, 0.25);
+			color: white;
+		}
+
+		.btn-warning {
+			background: #f59e0b;
+			color: white;
+		}
+
+		.btn-warning:hover {
+			background: #d97706;
+			transform: translateY(-2px);
+			box-shadow: 0 8px 16px rgba(245, 158, 11, 0.25);
+			color: white;
+		}
+
+		.content-grid {
+			display: grid;
+			grid-template-columns: 2fr 1fr;
+			gap: 1.5rem;
+			margin-bottom: 2rem;
+		}
+
+		.chart-card,
+		.info-card {
+			background: white;
+			border-radius: 16px;
+			padding: 1.75rem;
+			border: 1px solid #e2e8f0;
+		}
+
+		.chart-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 1.5rem;
+		}
+
+		.chart-header h3 {
+			font-size: 1.125rem;
+			font-weight: 700;
+			color: #1e293b;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.list-item {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			padding: 1rem;
+			border-bottom: 1px solid #f1f5f9;
+			transition: all 0.3s ease;
+		}
+
+		.list-item:hover {
+			background: #f8f9fa;
+		}
+
+		.list-item:last-child {
+			border-bottom: none;
+		}
+
+		.list-avatar {
+			width: 45px;
+			height: 45px;
+			border-radius: 10px;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 700;
+			flex-shrink: 0;
+		}
+
+		.list-info {
+			flex: 1;
+		}
+
+		.list-title {
+			font-weight: 600;
+			color: #1e293b;
+			font-size: 0.95rem;
+			margin-bottom: 0.25rem;
+		}
+
+		.list-subtitle {
+			font-size: 0.85rem;
+			color: #64748b;
+		}
+
+		.badge {
+			padding: 0.375rem 0.875rem;
+			border-radius: 20px;
+			font-size: 0.8rem;
+			font-weight: 600;
+		}
+
+		.badge-success {
+			background: #dcfce7;
+			color: #166534;
+		}
+
+		.badge-warning {
+			background: #fef3c7;
+			color: #92400e;
+		}
+
+		.badge-danger {
+			background: #fee2e2;
+			color: #991b1b;
+		}
+
+		.badge-info {
+			background: #dbeafe;
+			color: #1e40af;
+		}
+
+		@media(max-width: 1200px) {
+			.content-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+
+		@media(max-width: 768px) {
+			.sidebar {
+				transform: translateX(-100%);
+			}
+
+			.dashboard-content {
+				margin-left: 0;
+				padding: 1rem;
+			}
+
+			.search-input {
+				width: 200px;
+			}
+
+			.user-info {
+				display: none;
+			}
+
+			.navbar-subtitle {
+				display: none;
+			}
+
+			.dashboard-cards {
+				grid-template-columns: 1fr;
+			}
 		}
 	</style>
+{% endblock %}
 
-	<h2>Inventory by Category</h2>
-	<!-- Chart Container (25% of page width max) -->
-	<div class="chart-container" style="width: 45%; min-width: 200px; height: 400px;">
-		<div id="columnchart_material" style="width: 100%; height: 100%;"></div>
+{% block body %}
+	<nav class="top-navbar">
+		<div>
+			<div class="navbar-brand">NovaERP</div>
+			<div class="navbar-subtitle">Admin Portal</div>
+		</div>
+
+		<div class="navbar-right">
+			<form class="search-form">
+				<span class="search-icon">🔍</span>
+				<input type="text" placeholder="Search..." class="search-input">
+			</form>
+
+			<button class="notification-bell">
+				🔔
+				<span class="notification-badge">{{ pendingLeaves + pendingInvoices }}</span>
+			</button>
+
+			<div class="user-profile">
+				<div class="user-avatar">
+					{{ app.user.firstName ? app.user.firstName|slice(0, 1)|upper : 'A' }}
+				</div>
+				<div class="user-info">
+					<div class="user-name">{{ app.user.firstName ?? 'Admin' }}
+						{{ app.user.lastName ?? '' }}</div>
+					<div class="user-role">Administrator</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<div class="dashboard-wrapper">
+		<aside class="sidebar">
+			<ul class="sidebar-menu">
+				<li class="menu-item active">
+					<a href="{{ path('dashboard_admin_index') }}">
+						<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+						</svg>
+						Dashboard
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="{{ path('app_users_index') }}">
+						<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+						</svg>
+						Users
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="{{ path('app_client_index') }}">
+						<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+						</svg>
+						Clients
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="{{ path('app_project_index') }}">
+						<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+						</svg>
+						Projects
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="{{ path('app_invoice_index') }}">
+						<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+						</svg>
+						Invoices
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="{{ path('app_inventory_index') }}">
+						<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+						</svg>
+						Inventory
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="{{ path('app_supplier_index') }}">
+						<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+						</svg>
+						Suppliers
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="{{ path('app_leave_request_index') }}">
+						<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+						</svg>
+						Leave Requests
+					</a>
+				</li>
+				<li class="menu-item">
+					<a href="{{ path('app_settings_index') }}">
+						<svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+						</svg>
+						Settings
+					</a>
+				</li>
+			</ul>
+		</aside>
+
+		<main class="dashboard-content">
+			<div class="welcome-section">
+				<h2>Welcome back,
+					{{ app.user.firstName ?? 'Admin' }}! 👋</h2>
+				<p>Here's what's happening with your business today</p>
+			</div>
+
+			<div class="dashboard-cards">
+				<div class="stat-card">
+					<div class="stat-card-content">
+						<div class="stat-icon blue">📁</div>
+						<div class="stat-info">
+							<h3>Total Projects</h3>
+							<div class="stat-value">{{ totalProjects }}</div>
+							<div class="stat-change positive">↑ 12% from last month</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-card-content">
+						<div class="stat-icon green">👥</div>
+						<div class="stat-info">
+							<h3>Active Clients</h3>
+							<div class="stat-value">{{ activeClients }}</div>
+							<div class="stat-change positive">↑ 8% from last month</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-card-content">
+						<div class="stat-icon red">📄</div>
+						<div class="stat-info">
+							<h3>Pending Invoices</h3>
+							<div class="stat-value">{{ pendingInvoices }}</div>
+							<div class="stat-change negative">Needs attention</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-card-content">
+						<div class="stat-icon yellow">⏰</div>
+						<div class="stat-info">
+							<h3>Pending Leaves</h3>
+							<div class="stat-value">{{ pendingLeaves }}</div>
+							<div class="stat-change negative">Requires approval</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-card-content">
+						<div class="stat-icon purple">👨‍💼</div>
+						<div class="stat-info">
+							<h3>Total Employees</h3>
+							<div class="stat-value">{{ totalEmployees ?? 0 }}</div>
+							<div class="stat-change positive">↑ 3 new hires</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-card-content">
+						<div class="stat-icon indigo">📦</div>
+						<div class="stat-info">
+							<h3>Inventory Items</h3>
+							<div class="stat-value">{{ totalInventory ?? 0 }}</div>
+							<div class="stat-change positive">Well stocked</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-card-content">
+						<div class="stat-icon pink">🏢</div>
+						<div class="stat-info">
+							<h3>Active Suppliers</h3>
+							<div class="stat-value">{{ totalSuppliers ?? 0 }}</div>
+							<div class="stat-change positive">All verified</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="stat-card">
+					<div class="stat-card-content">
+						<div class="stat-icon teal">✓</div>
+						<div class="stat-info">
+							<h3>Tasks Completed</h3>
+							<div class="stat-value">{{ completedTasks ?? 0 }}</div>
+							<div class="stat-change positive">↑ Great progress</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section-header">
+				<h2>Quick Actions</h2>
+			</div>
+
+			<div class="quick-actions">
+				<a href="{{ path('app_invoice_new') }}" class="action-btn btn-primary">
+					📝 Create Invoice
+				</a>
+				<a href="{{ path('app_client_new') }}" class="action-btn btn-success">
+					👥 Add Client
+				</a>
+				<a href="{{ path('app_project_new') }}" class="action-btn btn-warning">
+					📊 New Project
+				</a>
+				<a href="{{ path('app_users_new') }}" class="action-btn btn-primary">
+					👤 Add User
+				</a>
+			</div>
+
+			<div class="content-grid">
+				<div class="chart-card">
+					<div class="chart-header">
+						<h3>📦 Inventory by Category</h3>
+					</div>
+					<div id="columnchart_material" style="width: 100%; height: 350px;"></div>
+				</div>
+
+				<div class="info-card">
+					<div class="chart-header">
+						<h3>⏰ Recent Leave Requests</h3>
+						<a href="{{ path('app_leave_request_index') }}" style="color: #2563eb; font-size: 0.875rem; text-decoration: none;">View All</a>
+					</div>
+					{% if recentLeaves is defined and recentLeaves|length > 0 %}
+						{% for leave in recentLeaves|slice(0, 5) %}
+							<div class="list-item">
+								<div class="list-avatar">{{ leave.users.firstName|slice(0, 1) }}</div>
+								<div class="list-info">
+									<div class="list-title">{{ leave.users.firstName }}
+										{{ leave.users.lastName }}</div>
+									<div class="list-subtitle">{{ leave.startDate|date('M d') }}
+										-
+										{{ leave.endDate|date('M d') }}</div>
+								</div>
+								<span class="badge badge-warning">Pending</span>
+							</div>
+						{% endfor %}
+					{% else %}
+						<div style="text-align: center; padding: 2rem; color: #94a3b8;">
+							<p>No pending leave requests</p>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</main>
 	</div>
 
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	<script type="text/javascript">
-		google.charts.load('current', {'packages': ['corechart']});
-google.charts.setOnLoadCallback(drawChart);
+</main></div><!-- Google Charts Scripts --><script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><script type="text/javascript">
+google.charts.load('current', {'packages': ['corechart']});
+google.charts.setOnLoadCallback(drawCharts);
 
-var chart,
-data,
-options;
+function drawCharts() {
+drawInventoryChart();
 
-function drawChart() {
-data = google.visualization.arrayToDataTable([[
+}
+
+// Inventory Chart
+function drawInventoryChart() {
+const data = google.visualization.arrayToDataTable([[
 'Category', 'Total Items'
 ],{% for inv in inventoryPerCategory %}[
 '{{ inv.category }}', {{ inv.total }}
 ],{% endfor %}]);
 
-options = {
-title: 'Inventory by Category',
+const options = {
+title: 'Inventory Distribution',
 chartArea: {
-width: '80%', // chart area inside container
+width: '80%',
 height: '70%'
 },
-hAxis: {
-textPosition: 'none'
-},
-vAxis: {
-title: ''
+colors: [
+'#2563eb',
+'#16a34a',
+'#f59e0b',
+'#dc2626',
+'#8b5cf6'
+],
+legend: {
+position: 'bottom'
 }
 };
 
-chart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
+const chart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
 chart.draw(data, options);
 }
-
-// Redraw chart on window resize
-window.addEventListener('resize', drawChart);
-	</script>
-	<!-- Year Selector -->
-	<div class="mb-3">
-		<label for="selectYear" class="form-label">Select Year:</label>
-		{% set currentYear = "now"|date("Y")|number_format(0, '', '') %}
-		<select id="selectYear" class="form-select" style="width:120px;">
-			{% for i in 0..5 %}
-				{% set y = currentYear - i %}
-				<option value="{{ y }}" {% if y == selectedYear %} selected {% endif %}>{{ y }}</option>
-			{% endfor %}
-		</select>
-	</div>
-
-	<!-- Chart Container -->
-	<div id="projects_chart" style="width: 100%; max-width: 700px; height: 400px; margin: auto;"></div>
-
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	<script type="text/javascript">
-		google.charts.load('current', {packages: ['corechart']});
-google.charts.setOnLoadCallback(drawProjectsChart);
-
-function drawProjectsChart() { // Prepare data from backend
-const monthlyProjects = [{% set started = false %}{% for value in monthlyProjects %}{% if value > 0 %}{% set started = true %}{% endif %}{{ started ? value : 'null' }}{% if not loop.last %},{% endif %}{% endfor %}];
+/*
+// Projects Chart
+function drawProjectsChart() {
+const monthlyProjects = [{% set started = false %}{% for value in monthlyProjects %}{% if value > 0 %}{% set started = true %}
+{% endif %}
+{{ started ? value : 'null' }}
+{% if not loop.last %},{% endif %}{% endfor %}];
 
 const dataArray = [
 [
@@ -492,28 +897,15 @@ const dataArray = [
 const data = google.visualization.arrayToDataTable(dataArray);
 
 const options = {
-title: 'Completed Projects per Month',
+curveType: 'function',
+pointSize: 6,
+colors: ['#2563eb'],
 legend: {
 position: 'bottom'
 },
-curveType: 'function', // <-- make sure this is 'function'
-pointSize: 6,
-vAxis: {
-minValue: 0,
-format: '$#,###'
-},
-hAxis: {
-textStyle: {
-fontSize: 12
-}
-},
 chartArea: {
-left: 50,
-right: 20,
-top: 40,
-bottom: 40,
-width: '100%',
-height: '80%'
+width: '85%',
+height: '70%'
 }
 };
 
@@ -522,50 +914,11 @@ chart.draw(data, options);
 }
 
 // Redraw on window resize
-window.addEventListener('resize', drawProjectsChart);
+window.addEventListener('resize', drawCharts);
 
-// Update chart when year changes
+// Year selector
 document.getElementById('selectYear').addEventListener('change', function () {
-const selectedYear = this.value;
-window.location.href = `?year=${selectedYear}`;
-});
-	</script>
-
-
-{% endblock %}
-<style>
-	.my-chart {
-		margin: 50px 50px 30px 30px;
-		max-width: 50%;
-		background-color: #f9f9f9; /* optional background */
-		border: 1px solid #ccc; /* optional border */
-		padding: 20px; /* optional padding */
-	}
-
-	.quick-actions-row {
-		display: flex;
-		justify-content: center; /* center horizontally */
-		flex-wrap: wrap; /* wrap on smaller screens */
-		gap: 30px; /* spacing between cards */
-		margin-bottom: 40px;
-	}
-
-	.quick-action-card {
-		flex: 1 1 250px; /* responsive width, min 250px */
-		max-width: 300px;
-		transition: transform 0.2s, box-shadow 0.2s;
-	}
-
-	.quick-action-card:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-	}
-
-	.quick-action-card i {
-		color: #0d6efd; /* optional: primary color for icons */
-	}
-
-	.quick-action-card .btn {
-		margin-top: 10px;
-	}
-</style>
+window.location.href = `?year=${
+this.value
+}`
+});*/</script>{% endblock %}

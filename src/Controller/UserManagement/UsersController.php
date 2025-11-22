@@ -10,25 +10,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/users')]
-#[IsGranted('ROLE_ADMIN')]
 final class UsersController extends AbstractController
 {
     #[Route(name: 'app_users_index', methods: ['GET'])]
     public function index(UsersRepository $usersRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $users = $usersRepository->findAll();
 
-        // Dynamically get columns
-        $columns = [];
-        if (!empty($users)) {
-            $reflection = new \ReflectionClass($users[0]);
-            foreach ($reflection->getProperties() as $prop) {
-                $columns[] = $prop->getName();
-            }
-        }
+        // Only include scalar fields, exclude relationships
+        $columns = ['id', 'email', 'roles', 'firstName', 'lastName', 'createdAt', 'birthdate'];
 
         return $this->render('crud/list.html.twig', [
             'page_title' => 'Users List',
@@ -41,6 +35,8 @@ final class UsersController extends AbstractController
     #[Route('/new', name: 'app_users_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $user = new Users();
         $form = $this->createForm(UsersType::class, $user, [
             'available_roles' => $this->getParameter('app.available_roles'),
@@ -66,6 +62,8 @@ final class UsersController extends AbstractController
     #[Route('/{id}', name: 'app_users_show', methods: ['GET'])]
     public function show(Users $user): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         return $this->render('crud/show.html.twig', [
             'page_title' => 'User Details',
             'item' => $user,
@@ -76,6 +74,8 @@ final class UsersController extends AbstractController
     #[Route('/{id}/edit', name: 'app_users_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Users $user, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $form = $this->createForm(UsersType::class, $user, [
             'available_roles' => $this->getParameter('app.available_roles'),
         ]);
@@ -98,6 +98,8 @@ final class UsersController extends AbstractController
     #[Route('/{id}', name: 'app_users_delete', methods: ['POST'])]
     public function delete(Request $request, Users $user, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();

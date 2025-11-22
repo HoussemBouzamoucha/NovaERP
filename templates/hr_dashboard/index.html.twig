@@ -1,32 +1,657 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RhDashboardController!
+{% block title %}HR Dashboard - TechCorp Solutions
 {% endblock %}
 
 {% block body %}
 	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
 		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
+
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+			background: #f8fafc;
+			color: #1e293b;
+		}
+
+		.dashboard-container {
+			max-width: 1400px;
+			margin: 0 auto;
+			padding: 2rem;
+		}
+
+		.dashboard-header {
+			margin-bottom: 2rem;
+		}
+
+		.dashboard-header h1 {
+			font-size: 2rem;
+			font-weight: 700;
+			color: #0f172a;
+			margin-bottom: 0.5rem;
+		}
+
+		.dashboard-header p {
+			color: #64748b;
+			font-size: 1rem;
+		}
+
+		.stats-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+			gap: 1.5rem;
+			margin-bottom: 2rem;
+		}
+
+		.stat-card {
+			background: white;
+			border-radius: 12px;
+			padding: 1.5rem;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			border: 1px solid #e2e8f0;
+			transition: transform 0.2s, box-shadow 0.2s;
+		}
+
+		.stat-card:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.stat-card-header {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+			margin-bottom: 1rem;
+		}
+
+		.stat-icon {
+			width: 48px;
+			height: 48px;
+			border-radius: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1.5rem;
+		}
+
+		.stat-icon.blue {
+			background: #dbeafe;
+			color: #2563eb;
+		}
+		.stat-icon.green {
+			background: #d1fae5;
+			color: #059669;
+		}
+		.stat-icon.yellow {
+			background: #fef3c7;
+			color: #d97706;
+		}
+		.stat-icon.purple {
+			background: #e9d5ff;
+			color: #9333ea;
+		}
+		.stat-icon.red {
+			background: #fee2e2;
+			color: #dc2626;
+		}
+		.stat-icon.indigo {
+			background: #e0e7ff;
+			color: #4f46e5;
+		}
+
+		.stat-content h3 {
+			font-size: 0.875rem;
+			font-weight: 500;
+			color: #64748b;
+			margin-bottom: 0.25rem;
+		}
+
+		.stat-value {
+			font-size: 2rem;
+			font-weight: 700;
+			color: #0f172a;
+		}
+
+		.stat-footer {
+			margin-top: 0.75rem;
+			padding-top: 0.75rem;
+			border-top: 1px solid #f1f5f9;
+			font-size: 0.875rem;
+			color: #64748b;
+		}
+
+		.content-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 1.5rem;
+			margin-bottom: 1.5rem;
+		}
+
+		.full-width {
+			grid-column: 1 / -1;
+		}
+
+		.card {
+			background: white;
+			border-radius: 12px;
+			padding: 1.5rem;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			border: 1px solid #e2e8f0;
+		}
+
+		.card-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 1.5rem;
+		}
+
+		.card-header h2 {
+			font-size: 1.25rem;
+			font-weight: 600;
+			color: #0f172a;
+		}
+
+		.card-actions {
+			display: flex;
+			gap: 0.5rem;
+		}
+
+		.btn {
+			padding: 0.5rem 1rem;
+			border-radius: 8px;
+			text-decoration: none;
+			font-size: 0.875rem;
+			font-weight: 500;
+			transition: all 0.2s;
+			border: none;
+			cursor: pointer;
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.btn-primary {
+			background: #2563eb;
+			color: white;
+		}
+
+		.btn-primary:hover {
+			background: #1d4ed8;
+		}
+
+		.btn-secondary {
+			background: #f1f5f9;
+			color: #475569;
+		}
+
+		.btn-secondary:hover {
+			background: #e2e8f0;
+		}
+
+		.btn-sm {
+			padding: 0.375rem 0.75rem;
+			font-size: 0.813rem;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		thead {
+			background: #f8fafc;
+		}
+
+		th {
+			padding: 0.75rem 1rem;
+			text-align: left;
+			font-size: 0.875rem;
+			font-weight: 600;
+			color: #475569;
+			border-bottom: 1px solid #e2e8f0;
+		}
+
+		td {
+			padding: 1rem;
+			font-size: 0.875rem;
+			color: #334155;
+			border-bottom: 1px solid #f1f5f9;
+		}
+
+		tbody tr:hover {
+			background: #f8fafc;
+		}
+
+		.badge {
+			display: inline-block;
+			padding: 0.25rem 0.75rem;
+			border-radius: 9999px;
+			font-size: 0.75rem;
+			font-weight: 600;
+		}
+
+		.badge-pending {
+			background: #fef3c7;
+			color: #92400e;
+		}
+
+		.badge-approved {
+			background: #d1fae5;
+			color: #065f46;
+		}
+
+		.badge-rejected {
+			background: #fee2e2;
+			color: #991b1b;
+		}
+
+		.empty-state {
+			text-align: center;
+			padding: 3rem 1rem;
+			color: #94a3b8;
+		}
+
+		.empty-state-icon {
+			font-size: 3rem;
+			margin-bottom: 1rem;
+			opacity: 0.5;
+		}
+
+		.quick-actions {
+			display: grid;
+			gap: 0.75rem;
+		}
+
+		.action-link {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+			padding: 1rem;
+			background: #f8fafc;
+			border-radius: 8px;
+			text-decoration: none;
+			color: #334155;
+			transition: all 0.2s;
+			border: 1px solid #e2e8f0;
+		}
+
+		.action-link:hover {
+			background: #f1f5f9;
+			border-color: #cbd5e1;
+		}
+
+		.action-icon {
+			width: 40px;
+			height: 40px;
+			border-radius: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: white;
+			font-size: 1.25rem;
+		}
+
+		.list-item {
+			padding: 0.75rem 0;
+			border-bottom: 1px solid #f1f5f9;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.list-item:last-child {
+			border-bottom: none;
+		}
+
+		.list-item-content {
+			flex: 1;
+		}
+
+		.list-item-title {
+			font-weight: 500;
+			color: #0f172a;
+			margin-bottom: 0.25rem;
+		}
+
+		.list-item-subtitle {
+			font-size: 0.813rem;
+			color: #64748b;
+		}
+
+		.departments-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			gap: 1rem;
+			margin-top: 1rem;
+		}
+
+		.department-card {
+			padding: 1rem;
+			background: #f8fafc;
+			border-radius: 8px;
+			border: 1px solid #e2e8f0;
+		}
+
+		.department-card h4 {
+			font-size: 0.875rem;
+			font-weight: 600;
+			color: #0f172a;
+			margin-bottom: 0.5rem;
+		}
+
+		.department-card p {
+			font-size: 0.813rem;
+			color: #64748b;
+			margin-bottom: 0.5rem;
+		}
+
+		.department-stat {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: #2563eb;
+		}
+
+		@media(max-width: 1024px) {
+			.content-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+
+		@media(max-width: 640px) {
+			.dashboard-container {
+				padding: 1rem;
+			}
+
+			.stats-grid {
+				grid-template-columns: 1fr;
+			}
 		}
 	</style>
 
-	<div class="example-wrapper">
-		<h1>Hello			
-					This friendly message is coming from:
-			<ul>
-				<li>Your controller at
-					<code>C:/Users/Houssem/Documents/NovaERP/src/Controller/RhDashboardController.php</code>
-				</li>
-				<li>Your template at
-					<code>C:/Users/Houssem/Documents/NovaERP/templates/rh_dashboard/index.html.twig</code>
-				</li>
-			</ul>
+	<div class="dashboard-container">
+		<div class="dashboard-header">
+			<h1>👥 HR Dashboard</h1>
+			<p>Comprehensive overview of employees, departments, and HR operations</p>
 		</div>
-	{% endblock %}
+
+		<!-- Key Statistics -->
+		<div class="stats-grid">
+			<div class="stat-card">
+				<div class="stat-card-header">
+					<div class="stat-icon blue">👥</div>
+					<div class="stat-content">
+						<h3>Total Employees</h3>
+						<div class="stat-value">{{ total_employees|default(0) }}</div>
+					</div>
+				</div>
+				<div class="stat-footer">
+					Across
+					{{ total_departments|default(0) }}
+					departments
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-card-header">
+					<div class="stat-icon green">✓</div>
+					<div class="stat-content">
+						<h3>Active Staff</h3>
+						<div class="stat-value">{{ active_employees|default(0) }}</div>
+					</div>
+				</div>
+				<div class="stat-footer">
+					{{ ((active_employees|default(0) / total_employees|default(1)) * 100)|number_format(1) }}% of total workforce
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-card-header">
+					<div class="stat-icon yellow">⏰</div>
+					<div class="stat-content">
+						<h3>Pending Leave Requests</h3>
+						<div class="stat-value">{{ pending_leave_requests|default(0) }}</div>
+					</div>
+				</div>
+				<div class="stat-footer">
+					Require approval
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-card-header">
+					<div class="stat-icon purple">📊</div>
+					<div class="stat-content">
+						<h3>Avg. Attendance</h3>
+						<div class="stat-value">{{ average_attendance|default(0)|number_format(1) }}%</div>
+					</div>
+				</div>
+				<div class="stat-footer">
+					Last 30 days
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-card-header">
+					<div class="stat-icon red">🎂</div>
+					<div class="stat-content">
+						<h3>Upcoming Birthdays</h3>
+						<div class="stat-value">{{ upcoming_birthdays_count|default(0) }}</div>
+					</div>
+				</div>
+				<div class="stat-footer">
+					Next 30 days
+				</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-card-header">
+					<div class="stat-icon indigo">💰</div>
+					<div class="stat-content">
+						<h3>Payroll Processed</h3>
+						<div class="stat-value">{{ payroll_processed|default(0) }}</div>
+					</div>
+				</div>
+				<div class="stat-footer">
+					This month
+				</div>
+			</div>
+		</div>
+
+		<!-- Main Content Grid -->
+		<div
+			class="content-grid">
+			<!-- Recent Leave Requests -->
+			<div class="card">
+				<div class="card-header">
+					<h2>Recent Leave Requests</h2>
+					<a href="{{ path('app_leave_request_index') }}" class="btn btn-secondary btn-sm">View All</a>
+				</div>
+
+				{% if leave_requests is defined and leave_requests|length > 0 %}
+					<table>
+						<thead>
+							<tr>
+								<th>Employee</th>
+								<th>Dates</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for request in leave_requests|slice(0, 5) %}
+								<tr>
+									<td>
+										<strong>{{ request.users.firstName }}
+											{{ request.users.lastName }}</strong><br>
+										<span style="font-size: 0.813rem; color: #64748b;">{{ request.reason }}</span>
+									</td>
+									<td>
+										{{ request.startDateAt|date('M d') }}
+										-
+										{{ request.endDateAt|date('M d, Y') }}
+									</td>
+									<td>
+										<span class="badge badge-{{ request.status }}">
+											{{ request.status|capitalize }}
+										</span>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<div class="empty-state">
+						<div class="empty-state-icon">📋</div>
+						<p>No leave requests found</p>
+					</div>
+				{% endif %}
+			</div>
+
+			<!-- Quick Actions -->
+			<div class="card">
+				<div class="card-header">
+					<h2>Quick Actions</h2>
+				</div>
+
+				<div class="quick-actions">
+					<a href="{{ path('app_users_new') }}" class="action-link">
+						<div class="action-icon">➕</div>
+						<div>
+							<div class="list-item-title">Add New Employee</div>
+							<div class="list-item-subtitle">Onboard a new team member</div>
+						</div>
+					</a>
+
+					<a href="{{ path('app_leave_request_index') }}" class="action-link">
+						<div class="action-icon">📋</div>
+						<div>
+							<div class="list-item-title">Review Leave Requests</div>
+							<div class="list-item-subtitle">{{ pending_leave_requests|default(0) }}
+								pending approvals</div>
+						</div>
+					</a>
+
+					<a href="{{ path('app_pay_roll_index') }}" class="action-link">
+						<div class="action-icon">💰</div>
+						<div>
+							<div class="list-item-title">Process Payroll</div>
+							<div class="list-item-subtitle">Manage employee compensation</div>
+						</div>
+					</a>
+
+					<a href="{{ path('app_attendance_index') }}" class="action-link">
+						<div class="action-icon">⏰</div>
+						<div>
+							<div class="list-item-title">View Attendance</div>
+							<div class="list-item-subtitle">Track time and attendance</div>
+						</div>
+					</a>
+
+					<a href="{{ path('app_department_index') }}" class="action-link">
+						<div class="action-icon">🏢</div>
+						<div>
+							<div class="list-item-title">Manage Departments</div>
+							<div class="list-item-subtitle">Organize teams and units</div>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<!-- Recent Hires -->
+			<div class="card">
+				<div class="card-header">
+					<h2>Recent Hires</h2>
+					<a href="{{ path('app_users_index') }}" class="btn btn-secondary btn-sm">View All</a>
+				</div>
+
+				{% if recent_hires is defined and recent_hires|length > 0 %}
+					<table>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Department</th>
+								<th>Role</th>
+								<th>Start Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for hire in recent_hires|slice(0, 5) %}
+								<tr>
+									<td>
+										<strong>{{ hire.firstName }}
+											{{ hire.lastName }}</strong>
+									</td>
+									<td>{{ hire.department.name }}</td>
+									<td>{{ hire.roles[0]|replace({'ROLE_': ''})|title }}</td>
+									<td>{{ hire.createdAt|date('M d, Y') }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					<div class="empty-state">
+						<div class="empty-state-icon">👋</div>
+						<p>No recent hires</p>
+					</div>
+				{% endif %}
+			</div>
+
+			<!-- Upcoming Birthdays -->
+			<div class="card">
+				<div class="card-header">
+					<h2>Upcoming Birthdays</h2>
+				</div>
+
+				{% if upcoming_birthdays is defined and upcoming_birthdays|length > 0 %}
+					{% for birthday in upcoming_birthdays|slice(0, 8) %}
+						<div class="list-item">
+							<div class="list-item-content">
+								<div class="list-item-title">🎂
+									{{ birthday.firstName }}
+									{{ birthday.lastName }}</div>
+								<div class="list-item-subtitle">{{ birthday.department.name }}</div>
+							</div>
+							<div style="color: #64748b; font-size: 0.875rem;">
+								{{ birthday.birthdate|date('M d') }}
+							</div>
+						</div>
+					{% endfor %}
+				{% else %}
+					<div class="empty-state">
+						<div class="empty-state-icon">🎂</div>
+						<p>No upcoming birthdays</p>
+					</div>
+				{% endif %}
+			</div>
+
+			<!-- Department Overview -->
+			<div class="card full-width">
+				<div class="card-header">
+					<h2>Department Overview</h2>
+					<a href="{{ path('app_department_index') }}" class="btn btn-secondary btn-sm">Manage</a>
+				</div>
+
+				{% if departments is defined and departments|length > 0 %}
+					<div class="departments-grid">
+						{% for dept in departments %}
+							<div class="department-card">
+								<h4>{{ dept.name }}</h4>
+								<p>{{ dept.description|length > 50 ? dept.description|slice(0, 50) ~ '...' : dept.description }}</p>
+								<div class="department-stat">{{ dept.employee_count }}</div>
+								<div style="font-size: 0.75rem; color: #64748b;">Employees</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% else %}
+					<div class="empty-state">
+						<div class="empty-state-icon">🏢</div>
+						<p>No departments configured</p>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -118,58 +118,58 @@ class AppFixtures extends Fixture
         }
 
         // Create Users with simplified roles
-        $users = [];
+         $users = [];
         $userData = [
-            // ROLE_SUPER_ADMIN (1 user) - Department 0
-            ['email' => 'superadmin@techcorp.com', 'firstName' => 'Alex', 'lastName' => 'Supreme', 'roles' => ['ROLE_SUPER_ADMIN'], 'dept' => 0],
+            // ROLE_SUPER_ADMIN (1 user)
+            ['email' => 'superadmin@techcorp.com', 'firstName' => 'Alex', 'lastName' => 'Supreme', 'roles' => ['ROLE_SUPER_ADMIN'], 'dept' => 0, 'birthdate' => '1980-03-15'],
             
-            // ROLE_ADMIN (3 users) - Department 0
-            ['email' => 'admin1@techcorp.com', 'firstName' => 'Sarah', 'lastName' => 'Administrator', 'roles' => ['ROLE_ADMIN'], 'dept' => 0],
-            ['email' => 'admin2@techcorp.com', 'firstName' => 'Michael', 'lastName' => 'Systems', 'roles' => ['ROLE_ADMIN'], 'dept' => 0],
-            ['email' => 'admin3@techcorp.com', 'firstName' => 'Jennifer', 'lastName' => 'Config', 'roles' => ['ROLE_ADMIN'], 'dept' => 0],
+            // ROLE_ADMIN (3 users)
+            ['email' => 'admin1@techcorp.com', 'firstName' => 'Sarah', 'lastName' => 'Administrator', 'roles' => ['ROLE_ADMIN'], 'dept' => 0, 'birthdate' => '1985-07-22'],
+            ['email' => 'admin2@techcorp.com', 'firstName' => 'Michael', 'lastName' => 'Systems', 'roles' => ['ROLE_ADMIN'], 'dept' => 0, 'birthdate' => '1988-11-30'],
+            ['email' => 'admin3@techcorp.com', 'firstName' => 'Jennifer', 'lastName' => 'Config', 'roles' => ['ROLE_ADMIN'], 'dept' => 0, 'birthdate' => '1990-01-18'],
             
-            // ROLE_HR (3 users) - Department 1
-            ['email' => 'hr1@techcorp.com', 'firstName' => 'Emily', 'lastName' => 'Harrison', 'roles' => ['ROLE_HR'], 'dept' => 1],
-            ['email' => 'hr2@techcorp.com', 'firstName' => 'David', 'lastName' => 'Personnel', 'roles' => ['ROLE_HR'], 'dept' => 1],
-            ['email' => 'hr3@techcorp.com', 'firstName' => 'Lisa', 'lastName' => 'Recruitment', 'roles' => ['ROLE_HR'], 'dept' => 1],
+            // ROLE_HR (3 users)
+            ['email' => 'hr1@techcorp.com', 'firstName' => 'Emily', 'lastName' => 'Harrison', 'roles' => ['ROLE_HR'], 'dept' => 1, 'birthdate' => '1987-05-12'],
+            ['email' => 'hr2@techcorp.com', 'firstName' => 'David', 'lastName' => 'Personnel', 'roles' => ['ROLE_HR'], 'dept' => 1, 'birthdate' => '1992-09-08'],
+            ['email' => 'hr3@techcorp.com', 'firstName' => 'Lisa', 'lastName' => 'Recruitment', 'roles' => ['ROLE_HR'], 'dept' => 1, 'birthdate' => '1989-12-25'],
             
-            // ROLE_FINANCE (3 users) - Department 2
-            ['email' => 'finance1@techcorp.com', 'firstName' => 'Robert', 'lastName' => 'Treasury', 'roles' => ['ROLE_FINANCE'], 'dept' => 2],
-            ['email' => 'finance2@techcorp.com', 'firstName' => 'Anna', 'lastName' => 'Accounting', 'roles' => ['ROLE_FINANCE'], 'dept' => 2],
-            ['email' => 'finance3@techcorp.com', 'firstName' => 'James', 'lastName' => 'Numbers', 'roles' => ['ROLE_FINANCE'], 'dept' => 2],
+            // ROLE_FINANCE (3 users)
+            ['email' => 'finance1@techcorp.com', 'firstName' => 'Robert', 'lastName' => 'Treasury', 'roles' => ['ROLE_FINANCE'], 'dept' => 2, 'birthdate' => '1983-02-14'],
+            ['email' => 'finance2@techcorp.com', 'firstName' => 'Anna', 'lastName' => 'Accounting', 'roles' => ['ROLE_FINANCE'], 'dept' => 2, 'birthdate' => '1991-06-19'],
+            ['email' => 'finance3@techcorp.com', 'firstName' => 'James', 'lastName' => 'Numbers', 'roles' => ['ROLE_FINANCE'], 'dept' => 2, 'birthdate' => '1986-10-03'],
             
-            // ROLE_SALES (3 users) - Department 3
-            ['email' => 'sales1@techcorp.com', 'firstName' => 'Maria', 'lastName' => 'Martinez', 'roles' => ['ROLE_SALES'], 'dept' => 3],
-            ['email' => 'sales2@techcorp.com', 'firstName' => 'Thomas', 'lastName' => 'Business', 'roles' => ['ROLE_SALES'], 'dept' => 3],
-            ['email' => 'sales3@techcorp.com', 'firstName' => 'Patricia', 'lastName' => 'Customer', 'roles' => ['ROLE_SALES'], 'dept' => 3],
+            // ROLE_SALES (3 users)
+            ['email' => 'sales1@techcorp.com', 'firstName' => 'Maria', 'lastName' => 'Martinez', 'roles' => ['ROLE_SALES'], 'dept' => 3, 'birthdate' => '1993-04-27'],
+            ['email' => 'sales2@techcorp.com', 'firstName' => 'Thomas', 'lastName' => 'Business', 'roles' => ['ROLE_SALES'], 'dept' => 3, 'birthdate' => '1984-08-16'],
+            ['email' => 'sales3@techcorp.com', 'firstName' => 'Patricia', 'lastName' => 'Customer', 'roles' => ['ROLE_SALES'], 'dept' => 3, 'birthdate' => '1995-12-05'],
             
-            // ROLE_PROCUREMENT (3 users) - Department 4
-            ['email' => 'procurement1@techcorp.com', 'firstName' => 'William', 'lastName' => 'Buyer', 'roles' => ['ROLE_PROCUREMENT'], 'dept' => 4],
-            ['email' => 'procurement2@techcorp.com', 'firstName' => 'Elizabeth', 'lastName' => 'Warehouse', 'roles' => ['ROLE_PROCUREMENT'], 'dept' => 4],
-            ['email' => 'procurement3@techcorp.com', 'firstName' => 'Christopher', 'lastName' => 'Inventory', 'roles' => ['ROLE_PROCUREMENT'], 'dept' => 4],
+            // ROLE_PROCUREMENT (3 users)
+            ['email' => 'procurement1@techcorp.com', 'firstName' => 'William', 'lastName' => 'Buyer', 'roles' => ['ROLE_PROCUREMENT'], 'dept' => 4, 'birthdate' => '1988-01-29'],
+            ['email' => 'procurement2@techcorp.com', 'firstName' => 'Elizabeth', 'lastName' => 'Warehouse', 'roles' => ['ROLE_PROCUREMENT'], 'dept' => 4, 'birthdate' => '1990-07-11'],
+            ['email' => 'procurement3@techcorp.com', 'firstName' => 'Christopher', 'lastName' => 'Inventory', 'roles' => ['ROLE_PROCUREMENT'], 'dept' => 4, 'birthdate' => '1994-03-23'],
             
-            // ROLE_PRODUCTION (3 users) - Department 5
-            ['email' => 'production1@techcorp.com', 'firstName' => 'Jessica', 'lastName' => 'Operations', 'roles' => ['ROLE_PRODUCTION'], 'dept' => 5],
-            ['email' => 'production2@techcorp.com', 'firstName' => 'Daniel', 'lastName' => 'Quality', 'roles' => ['ROLE_PRODUCTION'], 'dept' => 5],
-            ['email' => 'production3@techcorp.com', 'firstName' => 'Nancy', 'lastName' => 'Supervisor', 'roles' => ['ROLE_PRODUCTION'], 'dept' => 5],
+            // ROLE_PRODUCTION (3 users)
+            ['email' => 'production1@techcorp.com', 'firstName' => 'Jessica', 'lastName' => 'Operations', 'roles' => ['ROLE_PRODUCTION'], 'dept' => 5, 'birthdate' => '1987-11-14'],
+            ['email' => 'production2@techcorp.com', 'firstName' => 'Daniel', 'lastName' => 'Quality', 'roles' => ['ROLE_PRODUCTION'], 'dept' => 5, 'birthdate' => '1992-05-08'],
+            ['email' => 'production3@techcorp.com', 'firstName' => 'Nancy', 'lastName' => 'Supervisor', 'roles' => ['ROLE_PRODUCTION'], 'dept' => 5, 'birthdate' => '1989-09-20'],
             
-            // ROLE_PROJECT_MANAGER (3 users) - Department 6
-            ['email' => 'pm1@techcorp.com', 'firstName' => 'Matthew', 'lastName' => 'Projects', 'roles' => ['ROLE_PROJECT_MANAGER'], 'dept' => 6],
-            ['email' => 'pm2@techcorp.com', 'firstName' => 'Karen', 'lastName' => 'Planning', 'roles' => ['ROLE_PROJECT_MANAGER'], 'dept' => 6],
-            ['email' => 'pm3@techcorp.com', 'firstName' => 'Steven', 'lastName' => 'Execution', 'roles' => ['ROLE_PROJECT_MANAGER'], 'dept' => 6],
+            // ROLE_PROJECT_MANAGER (3 users)
+            ['email' => 'pm1@techcorp.com', 'firstName' => 'Matthew', 'lastName' => 'Projects', 'roles' => ['ROLE_PROJECT_MANAGER'], 'dept' => 6, 'birthdate' => '1985-12-31'],
+            ['email' => 'pm2@techcorp.com', 'firstName' => 'Karen', 'lastName' => 'Planning', 'roles' => ['ROLE_PROJECT_MANAGER'], 'dept' => 6, 'birthdate' => '1991-02-17'],
+            ['email' => 'pm3@techcorp.com', 'firstName' => 'Steven', 'lastName' => 'Execution', 'roles' => ['ROLE_PROJECT_MANAGER'], 'dept' => 6, 'birthdate' => '1993-06-09'],
             
-            // ROLE_STAFF (6 users) - Department 7
-            ['email' => 'staff1@techcorp.com', 'firstName' => 'Betty', 'lastName' => 'Worker', 'roles' => ['ROLE_STAFF'], 'dept' => 7],
-            ['email' => 'staff2@techcorp.com', 'firstName' => 'Richard', 'lastName' => 'Employee', 'roles' => ['ROLE_STAFF'], 'dept' => 7],
-            ['email' => 'staff3@techcorp.com', 'firstName' => 'Susan', 'lastName' => 'Contributor', 'roles' => ['ROLE_STAFF'], 'dept' => 7],
-            ['email' => 'staff4@techcorp.com', 'firstName' => 'Joseph', 'lastName' => 'Assistant', 'roles' => ['ROLE_STAFF'], 'dept' => 7],
-            ['email' => 'staff5@techcorp.com', 'firstName' => 'Linda', 'lastName' => 'Support', 'roles' => ['ROLE_STAFF'], 'dept' => 7],
-            ['email' => 'staff6@techcorp.com', 'firstName' => 'Charles', 'lastName' => 'Helper', 'roles' => ['ROLE_STAFF'], 'dept' => 7],
+            // ROLE_STAFF (6 users)
+            ['email' => 'staff1@techcorp.com', 'firstName' => 'Betty', 'lastName' => 'Worker', 'roles' => ['ROLE_STAFF'], 'dept' => 7, 'birthdate' => '1996-10-12'],
+            ['email' => 'staff2@techcorp.com', 'firstName' => 'Richard', 'lastName' => 'Employee', 'roles' => ['ROLE_STAFF'], 'dept' => 7, 'birthdate' => '1994-03-28'],
+            ['email' => 'staff3@techcorp.com', 'firstName' => 'Susan', 'lastName' => 'Contributor', 'roles' => ['ROLE_STAFF'], 'dept' => 7, 'birthdate' => '1997-07-04'],
+            ['email' => 'staff4@techcorp.com', 'firstName' => 'Joseph', 'lastName' => 'Assistant', 'roles' => ['ROLE_STAFF'], 'dept' => 7, 'birthdate' => '1995-11-21'],
+            ['email' => 'staff5@techcorp.com', 'firstName' => 'Linda', 'lastName' => 'Support', 'roles' => ['ROLE_STAFF'], 'dept' => 7, 'birthdate' => '1998-01-15'],
+            ['email' => 'staff6@techcorp.com', 'firstName' => 'Charles', 'lastName' => 'Helper', 'roles' => ['ROLE_STAFF'], 'dept' => 7, 'birthdate' => '1992-08-30'],
             
-            // ROLE_GUEST (3 users) - Department 7
-            ['email' => 'guest1@techcorp.com', 'firstName' => 'Mark', 'lastName' => 'Observer', 'roles' => ['ROLE_GUEST'], 'dept' => 7],
-            ['email' => 'guest2@techcorp.com', 'firstName' => 'Barbara', 'lastName' => 'Visitor', 'roles' => ['ROLE_GUEST'], 'dept' => 7],
-            ['email' => 'guest3@techcorp.com', 'firstName' => 'Paul', 'lastName' => 'ReadOnly', 'roles' => ['ROLE_GUEST'], 'dept' => 7],
+            // ROLE_GUEST (3 users)
+            ['email' => 'guest1@techcorp.com', 'firstName' => 'Mark', 'lastName' => 'Observer', 'roles' => ['ROLE_GUEST'], 'dept' => 7, 'birthdate' => null],
+            ['email' => 'guest2@techcorp.com', 'firstName' => 'Barbara', 'lastName' => 'Visitor', 'roles' => ['ROLE_GUEST'], 'dept' => 7, 'birthdate' => null],
+            ['email' => 'guest3@techcorp.com', 'firstName' => 'Paul', 'lastName' => 'ReadOnly', 'roles' => ['ROLE_GUEST'], 'dept' => 7, 'birthdate' => null],
         ];
 
         foreach ($userData as $index => $data) {
@@ -183,6 +183,12 @@ class AppFixtures extends Fixture
             $user->setDepartment($departments[$data['dept']]);
             $user->setPayRoll($payrolls[$index]);
             $user->setAttendance($attendances[$index]);
+            
+            // Set birthdate if provided
+            if ($data['birthdate']) {
+                $user->setBirthdate(new \DateTimeImmutable($data['birthdate']));
+            }
+            
             $manager->persist($user);
             $users[] = $user;
         }

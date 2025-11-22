@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Dashboards;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -6,22 +7,32 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\AdminDashboardService;
+use App\Service\HrDashboardService;
 
 final class DashboardController extends AbstractController
 {
-   #[Route('/admin/dashboard', name: 'dashboard_admin_index')]
-public function admin(Request $request, AdminDashboardService $service): Response
-{
-    $selectedYear = $request->query->getInt('year', (int) date('Y'));
-    $stats = $service->getStats($selectedYear);
-
-    return $this->render('dashboard/admin/index.html.twig', $stats + ['selectedYear' => $selectedYear]);
-}
-    #[Route('/admin/hr/dashboard', name: 'dashboard_hr_index')]
-    public function hr(): Response
+    #[Route('/admin/dashboard', name: 'dashboard_admin_index')]
+    public function admin(Request $request, AdminDashboardService $service): Response
     {
-        return $this->render('hr_dashboard\index.html.twig');
+        $selectedYear = $request->query->getInt('year', (int) date('Y'));
+        $stats = $service->getStats($selectedYear);
+
+        return $this->render('dashboard/admin/index.html.twig', $stats + ['selectedYear' => $selectedYear]);
     }
+
+    #[Route('/admin/hr/dashboard', name: 'dashboard_hr_index')]
+public function hr(HrDashboardService $hrService): Response
+{
+    $data = $hrService->getStats();
+    
+    $data['department_stats'] = $hrService->getDepartmentStats();
+    $data['leave_request_stats'] = $hrService->getLeaveRequestStats();
+    $data['attendance_stats'] = $hrService->getAttendanceStats(30);
+    $data['payroll_summary'] = $hrService->getPayrollSummary();
+    $data['employees_by_role'] = $hrService->getEmployeesByRole();
+
+    return $this->render('hr_dashboard/index.html.twig', $data);
+}
 
     #[Route('/admin/finance/dashboard', name: 'dashboard_finance_index')]
     public function finance(): Response

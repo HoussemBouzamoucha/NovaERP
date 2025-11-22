@@ -5,41 +5,71 @@
 {% endblock %}
 
 {% block body %}
-	<div class="card shadow-sm mb-4">
-		<div class="card-header bg-primary text-white">
-			<h2 class="mb-0">{{ page_title }}</h2>
-		</div>
-		<div class="card-body p-4">
+	<div class="container-fluid px-4 py-4">
+		<div class="row justify-content-center">
+			<div class="col-lg-8">
+				<div class="mb-4">
+					<h2 class="fw-bold text-dark mb-1">{{ page_title }}</h2>
+					<p class="text-muted mb-0">Detailed information</p>
+				</div>
 
-			{% set fields = getFields(item) %}
+				<div class="card border-0 shadow-sm rounded-3">
+					<div class="card-header bg-white border-bottom py-3">
+						<h5 class="mb-0 fw-semibold">Details</h5>
+					</div>
+					<div class="card-body p-0">
+						{% set fields = getFields(item) %}
 
-			{% if fields is not empty %}
-				<ul class="list-group list-group-flush">
-					{% for field in fields %}
-						{% set value = getField(item, field) %}
+						{% if fields is not empty %}
+							<div class="list-group list-group-flush">
+								{% for field in fields %}
+									{% set value = getField(item, field) %}
 
-						<li class="list-group-item d-flex justify-content-between align-items-start {% if loop.index is odd %}bg-light{% endif %}">
-							<div class="fw-bold text-secondary">{{ field|humanize }}</div>
-
-							{% if value is iterable %}
-								<div>
-									{% for v in value %}
-										<span class="badge bg-info text-dark me-1">{{ v }}</span>
-									{% endfor %}
-								</div>
-							{% else %}
-								<div>{{ value }}</div>
+									<div class="list-group-item px-4 py-3 border-0 {% if loop.index is odd %}bg-light bg-opacity-50{% endif %}">
+										<div class="row align-items-start">
+											<div class="col-md-4">
+												<span class="fw-semibold text-secondary">{{ field|humanize }}</span>
+											</div>
+											<div class="col-md-8">
+												{% if value is iterable %}
+													<div class="d-flex flex-wrap gap-2">
+														{% for v in value %}
+															<span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-normal">{{ v }}</span>
+														{% endfor %}
+													</div>
+												{% else %}
+													<span class="text-dark">{{ value }}</span>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						{% else %}
+							<div class="p-5 text-center">
+								<i class="bi bi-info-circle fs-1 text-muted d-block mb-3"></i>
+								<p class="text-muted mb-0">No data available</p>
+							</div>
+						{% endif %}
+					</div>
+					<div class="card-footer bg-white border-top py-3">
+						<div class="d-flex gap-3">
+							<a href="{{ path('app_' ~ entity ~ '_index') }}" class="btn btn-outline-secondary px-4 py-2 rounded-pill">
+								<i class="bi bi-arrow-left me-2"></i>Back to list
+							</a>
+							{% if entity in ['attendance', 'payroll', 'invoice'] and is_granted('ROLE_ADMIN') %}
+								<a href="{{ path('app_' ~ entity ~ '_edit', {id: item.id}) }}" class="btn btn-outline-warning px-4 py-2 rounded-pill">
+									<i class="bi bi-pencil me-2"></i>Edit
+								</a>
+							{% elseif entity not in ['attendance', 'payroll', 'invoice'] %}
+								<a href="{{ path('app_' ~ entity ~ '_edit', {id: item.id}) }}" class="btn btn-outline-warning px-4 py-2 rounded-pill">
+									<i class="bi bi-pencil me-2"></i>Edit
+								</a>
 							{% endif %}
-						</li>
-					{% endfor %}
-				</ul>
-			{% else %}
-				<p class="text-muted">No data available.</p>
-			{% endif %}
-
-		</div>
-		<div class="card-footer">
-			<a href="{{ path('app_' ~ entity ~ '_index') }}" class="btn btn-secondary">Back to list</a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}

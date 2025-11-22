@@ -47,11 +47,12 @@ security:
         ROLE_GUEST: []
 
     access_control:
-        - { path: ^/admin/hr, roles: [ROLE_HR] }
+        - { path: ^/users, roles: ROLE_ADMIN }
+        - { path: ^/admin/hr, roles: ROLE_HR }
         - { path: ^/admin/finance, roles: ROLE_FINANCE }
         - { path: ^/admin/sales, roles: ROLE_SALES }
         - { path: ^/admin/procurement, roles: ROLE_PROCUREMENT }
         - { path: ^/admin/production, roles: ROLE_PRODUCTION }
         - { path: ^/admin/projects, roles: ROLE_PROJECT_MANAGER }
         - { path: ^/admin/staff, roles: ROLE_STAFF }
-        - { path: ^/admin, roles: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
+        - { path: ^/admin, roles: ROLE_ADMIN }
